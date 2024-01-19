@@ -1,12 +1,27 @@
-from robot_hat import Pin, ADC, PWM, Servo, fileDB
-from robot_hat import Grayscale_Module, Ultrasonic
-from robot_hat.utils import reset_mcu, run_command
+#from robot_hat import Pin, ADC, PWM, Servo, fileDB
 import time
+try:
+    from robot_hat import *
+    from robot_hat import reset_mcu
+    reset_mcu()
+    time.sleep(0.01)
+except ImportError:
+    print("This computer does not appear to be a PiCar-X system (robot_hat is not present). Shadowing hardware calls with substitute functions")
+    from sim_robot_hat import *
+#from robot_hat import Grayscale_Module, Ultrasonic
+#from robot_hat.utils import reset_mcu, run_command
 import os
+import atexit
+import logging 
+logging_format = "%(asctime)s: %(message)s"
+logging.basicConfig(format=logging_format, level=logging.INFO,
+datefmt="%H:%M:%S")
+logging.getLogger().setLevel(logging.DEBUG)
 
 # reset robot_hat
-reset_mcu()
-time.sleep(0.2)
+#reset_mcu()
+#time.sleep(0.2)
+import numpy
 
 def constrain(x, min_val, max_val):
     '''
@@ -92,6 +107,9 @@ class Picarx(object):
         tring, echo= ultrasonic_pins
         self.ultrasonic = Ultrasonic(Pin(tring), Pin(echo))
         
+         # --------- atexit registering ---------
+        atexit.register(self.stop)
+        
     def set_motor_speed(self, motor, speed):
         ''' set motor speed
         
@@ -107,9 +125,9 @@ class Picarx(object):
         elif speed < 0:
             direction = -1 * self.cali_dir_value[motor]
         speed = abs(speed)
-        if speed != 0:
-            speed = int(speed /2 ) + 50
-        speed = speed - self.cali_speed_value[motor]
+        #if speed != 0:
+            #speed = int(speed /2 ) + 50
+        #speed = speed - self.cali_speed_value[motor]
         if direction < 0:
             self.motor_direction_pins[motor].high()
             self.motor_speed_pins[motor].pulse_width_percent(speed)
@@ -173,13 +191,15 @@ class Picarx(object):
         self.set_motor_speed(1, speed)
         self.set_motor_speed(2, speed)
 
-    def backward(self, speed):
-        current_angle = self.dir_current_angle
+    def backward(self, speed, angle):
+        current_angle = angle
+
         if current_angle != 0:
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:
                 abs_current_angle = self.DIR_MAX
-            power_scale = (100 - abs_current_angle) / 100.0 
+            #power_scale = (100 - abs_current_angle) / 100.0 
+            power_scale = numpy.arctan(4*numpy.tan(current_angle)/(4+0.5*6 *numpy.tan(current_angle )))
             if (current_angle / abs_current_angle) > 0:
                 self.set_motor_speed(1, -1*speed)
                 self.set_motor_speed(2, speed * power_scale)
@@ -189,14 +209,16 @@ class Picarx(object):
         else:
             self.set_motor_speed(1, -1*speed)
             self.set_motor_speed(2, speed)  
+            
 
-    def forward(self, speed):
-        current_angle = self.dir_current_angle
+    def forward(self, speed, angle):
+        current_angle = angle
         if current_angle != 0:
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:
                 abs_current_angle = self.DIR_MAX
-            power_scale = (100 - abs_current_angle) / 100.0
+            #power_scale = (100 - abs_current_angle) / 100.0
+            power_scale = numpy.arctan(4*numpy.tan(current_angle)/(4+0.5*6 *numpy.tan(current_angle )))
             if (current_angle / abs_current_angle) > 0:
                 self.set_motor_speed(1, 1*speed * power_scale)
                 self.set_motor_speed(2, -speed) 
@@ -250,7 +272,9 @@ class Picarx(object):
             raise ValueError("grayscale reference must be a 1*3 list")
 
 if __name__ == "__main__":
+    print("here")
     px = Picarx()
     px.forward(50)
     time.sleep(1)
     px.stop()
+
