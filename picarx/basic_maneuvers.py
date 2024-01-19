@@ -1,4 +1,5 @@
-import picarx_improved as improved
+#import picarx_improved as improved
+from picarx_improved import Picarx
 
 import time
 
@@ -9,7 +10,8 @@ datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
 
 if __name__ == "__main__":
+    car = Picarx()
     logging.debug("Starting program")
-    improved.forward(50, 0)
+    car.forward(50, 0)
     time.sleep(2)
-    improved.stop 
+    car.stop() 
