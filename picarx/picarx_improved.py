@@ -192,7 +192,7 @@ class Picarx(object):
         self.set_motor_speed(2, speed)
 
     def backward(self, speed, angle):
-        current_angle = angle + 10 
+        current_angle = angle + 5
 
         if current_angle != 0:
             abs_current_angle = abs(current_angle)
@@ -212,7 +212,7 @@ class Picarx(object):
             
 
     def forward(self, speed, angle):
-        current_angle = angle - 6
+        current_angle = angle -2
         if current_angle != 0:
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:

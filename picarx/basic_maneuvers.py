@@ -7,69 +7,87 @@ import logging
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO,
 datefmt="%H:%M:%S")
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.INFO)
 car = Picarx()
 
 class Maneuvers ():
-    def parallel_park():
+    def parallel_park(self):
         logging.debug("Backing up at 70 degree angle for 2 seconds")
-        car.backward(100, 70)
+        car.backward(100, 75)
         time.sleep(2)
         
         logging.debug("Backing up at 50 degree angle for 1 second")
-        car.backward(100, 50)
+        car.backward(100, 55)
         time.sleep(1)
-
+        '''
         logging.debug("Backing up at 0 degree angle for 1 second")
         car.backward(100,0)
         time.sleep(1)
-
+        '''
         car.stop() 
         time.sleep(1)
 
         logging.debug("Going forward at 10 degree angle for 1 second")
         car.forward(100, 10)
-        time.sleep(1)
+        time.sleep(0.5)
 
         logging.debug("Going forward at 0 degree angle for 1 second")
         car.forward(100, 0)
-        time.sleep(1)
-
-        car.stop()
-
-    def three_turn():
+        time.sleep(0.5)
         
-        logging.debug("Going forward at 100 degree angle for 1 second")
-        car.forward(100,100)
-        time.sleep(1)
+        car.stop()
 
+    def three_turn(self):
+        
+        logging.debug("Going forward at 90 degree angle for 3 second")
+        car.forward(100,90)
+        time.sleep(3)
+        
         car.stop()
         time.sleep(0.5)
 
-        logging.debug("Backing up at 45 degree angle for 1 second")
-        car.backward(100, 45)
-        time.sleep(1)
-
-        car.stop()
-        time.sleep(0.5)
-
-        logging.debug("Going forward at 10 degree angle for 1 second")
-        car.forward(100,10)
-        time.sleep(1)
-
-        logging.debug("Going forward at 0 degree angle for 2 seconds")
-        car.forward(100,0)
+        logging.debug("Backing up at 0 degree angle for 2 second")
+        car.backward(100, 0)
         time.sleep(2)
+
+        car.stop()
+        time.sleep(0.5)
+        
+        logging.debug("Going forward at 90 degree angle for 2.5 seconds")
+        car.forward(100,90)
+        time.sleep(3)
+           
+        logging.debug("Going forward at 0 degree angle for 1 second")
+        car.forward(100,0)
+        time.sleep(1)
+        
+        car.stop()
+        
+        
     
-    def choose_move ():
-        choice = input("What maneuver would you like to do? Press a for moving forwards and backwards at an angle of your choice. Press b for parallel parking. Press c for 3 point turn." )
-        logging.debug("The choice is ")
-        logging.debug(choice)
+    def choose_move (self):
+        choice = input("What maneuver would you like to do? Press a for moving forwards and backwards at an angle of your choice. Press b for parallel parking. Press c for 3 point turn. Press x to cancel: " )
+        while (choice != 'x'): 
+            if choice == 'a':
+                angle = input("What angle (degrees): ")
+                car.forward(100,int(angle))
+                time.sleep(1)
+                car.stop()
+                car.backward(100, int(angle))
+                time.sleep(1)
+                car.stop()
+            elif choice == 'b':
+                self.parallel_park()
+            elif choice == 'c':
+                self.three_turn()
+            else: 
+                car.stop()
+                exit()
+            choice = input("What maneuver would you like to do? Press a for moving forwards and backwards at an angle of your choice. Press b for parallel parking. Press c for 3 point turn. Press x to cancel: " )
+        logging.debug("out of while")
 
 if __name__ == "__main__":
-    time.sleep(2)
     manuevers = Maneuvers()
     logging.debug("Starting program")
     manuevers.choose_move()
-    manuevers.three_turn()
     logging.debug("Finished program")
