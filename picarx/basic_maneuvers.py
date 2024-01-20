@@ -10,8 +10,28 @@ datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
 
 if __name__ == "__main__":
+    time.sleep(2)
     car = Picarx()
     logging.debug("Starting program")
-    car.forward(50, 0)
+    
+    car.backward(100, 70)
     time.sleep(2)
+    
+    car.backward(100, 50)
+    time.sleep(1)
+    
+    #car.backward(100, 20)
+    #time.sleep (1)
+    car.backward(100,0)
+    time.sleep(1)
+
     car.stop() 
+    time.sleep(1)
+    
+    car.forward(100, 10)
+    time.sleep(1)
+    car.forward(100, 0)
+    time.sleep(1)
+    car.stop()
+
+    logging.debug("Finished program")
