@@ -13,7 +13,7 @@ car = Picarx()
 class Maneuvers ():
     def parallel_park(self):
         logging.debug("Backing up at 70 degree angle for 2 seconds")
-        car.backward(100, 75)
+        car.backward(100, 85)
         time.sleep(2)
         
         logging.debug("Backing up at 50 degree angle for 1 second")
