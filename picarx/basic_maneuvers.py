@@ -91,5 +91,7 @@ if __name__ == "__main__":
     logging.debug("Starting program")
     #manuevers.choose_move()
     car.forward(100,0)
+    time.sleep(1)
     car.backward(100,0)
+    time.sleep(1)
     logging.debug("Finished program")
