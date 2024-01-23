@@ -2,7 +2,8 @@ import os
 from time import sleep
 import logging
 import subprocess
-import RPi.GPIO as GPIO
+import math
+#import RPi.GPIO as GPIO
 #from smbus import SMBus
 
 class ADC:
@@ -14,11 +15,11 @@ class ADC:
                 chn = int(chn[1:])
             else:
                 raise ValueError("ADC channel should be between [A0, A7], not {0}".format(chn))
-        if chn < 0 or chn > 7:  # 判断取出来的数字是否在0~7的范围内
-            self._error('Incorrect channel range')
-        chn = 7 - chn
-        self.chn = chn | 0x10  # 给从机地址
-        self.reg = 0x40 + self.chn
+        #if chn < 0 or chn > 7:  # 判断取出来的数字是否在0~7的范围内
+            #self._error('Incorrect channel range')
+        #chn = 7 - chn
+        #self.chn = chn | 0x10  # 给从机地址
+        #self.reg = 0x40 + self.chn
         
     def send(self, data, address):
         # Implement the logic to send data to the specified address
@@ -218,38 +219,44 @@ class I2C(_BasicClass):
     def __init__(self, *args, **kargs):     # *args表示位置参数（形式参数），可无，； **kargs表示默认值参数，可无。
         super().__init__()
         self._bus = 1
-        self._smbus = SMBus(self._bus)
+        #self._smbus = SMBus(self._bus)
 
     @_retry_wrapper
     def _i2c_write_byte(self, addr, data):   # i2C 写系列函数
         self._debug("_i2c_write_byte: [0x{:02X}] [0x{:02X}]".format(addr, data))
-        result = self._smbus.write_byte(addr, data)
-        return result
+        #result = self._smbus.write_byte(addr, data)
+        #return result 
+        return None
             
     @_retry_wrapper
     def _i2c_write_byte_data(self, addr, reg, data):
         self._debug("_i2c_write_byte_data: [0x{:02X}] [0x{:02X}] [0x{:02X}]".format(addr, reg, data))
-        return self._smbus.write_byte_data(addr, reg, data)
+        #return self._smbus.write_byte_data(addr, reg, data)
+        return None
     
     @_retry_wrapper
     def _i2c_write_word_data(self, addr, reg, data):
         self._debug("_i2c_write_word_data: [0x{:02X}] [0x{:02X}] [0x{:04X}]".format(addr, reg, data))
-        return self._smbus.write_word_data(addr, reg, data)
+        #return self._smbus.write_word_data(addr, reg, data)
+        return None
     
     @_retry_wrapper
     def _i2c_write_i2c_block_data(self, addr, reg, data):
         self._debug("_i2c_write_i2c_block_data: [0x{:02X}] [0x{:02X}] {}".format(addr, reg, data))
-        return self._smbus.write_i2c_block_data(addr, reg, data)
+        #return self._smbus.write_i2c_block_data(addr, reg, data)
+        return None
     
     @_retry_wrapper
     def _i2c_read_byte(self, addr):   # i2C 读系列函数
         self._debug("_i2c_read_byte: [0x{:02X}]".format(addr))
-        return self._smbus.read_byte(addr)
+        #return self._smbus.read_byte(addr)
+        return None
 
     @_retry_wrapper
     def _i2c_read_i2c_block_data(self, addr, reg, num):
         self._debug("_i2c_read_i2c_block_data: [0x{:02X}] [0x{:02X}] [{}]".format(addr, reg, num))
-        return self._smbus.read_i2c_block_data(addr, reg, num)
+        #return self._smbus.read_i2c_block_data(addr, reg, num)
+        return None
 
     @_retry_wrapper
     def is_ready(self, addr):
@@ -392,7 +399,7 @@ class PWM(I2C):
         self._debug("PWM address: {:02X}".format(self.ADDR))
         self.channel = channel
         self.timer = int(channel/4)
-        self.bus = smbus.SMBus(1)
+        #self.bus = smbus.SMBus(1)
         self._pulse_width = 0
         self._freq = 50
         self.freq(50)
@@ -445,10 +452,10 @@ class PWM(I2C):
         if len(arr) == 0:
             return timer[self.timer]["arr"]
         else:
-            timer[self.timer]["arr"] = int(arr[0]) - 1
+            #timer[self.timer]["arr"] = int(arr[0]) - 1
             reg = self.REG_ARR + self.timer
-            self._debug("Set arr to: %s"%timer[self.timer]["arr"])
-            self.i2c_write(reg, timer[self.timer]["arr"])
+            #self._debug("Set arr to: %s"%timer[self.timer]["arr"])
+            #self.i2c_write(reg, timer[self.timer]["arr"])
 
     def pulse_width(self, *pulse_width):
         if len(pulse_width) == 0:
@@ -466,8 +473,8 @@ class PWM(I2C):
             self._pulse_width_percent = pulse_width_percent[0]
             temp = self._pulse_width_percent / 100.0
             # print(temp)
-            pulse_width = temp * timer[self.timer]["arr"]
-            self.pulse_width(pulse_width)
+            #pulse_width = temp * timer[self.timer]["arr"]
+            #self.pulse_width(pulse_width)
 
 class Servo(_BasicClass):
     MAX_PW = 2500
@@ -508,14 +515,14 @@ class Servo(_BasicClass):
         self.pwm.pulse_width(pwm_value)
 
 class Pin(_BasicClass):
-    OUT = GPIO.OUT
-    IN = GPIO.IN
-    IRQ_FALLING = GPIO.FALLING
-    IRQ_RISING = GPIO.RISING
-    IRQ_RISING_FALLING = GPIO.BOTH
-    PULL_UP = GPIO.PUD_UP
-    PULL_DOWN = GPIO.PUD_DOWN
-    PULL_NONE = None
+    #OUT = GPIO.OUT
+    #IN = GPIO.IN
+    #IRQ_FALLING = GPIO.FALLING
+    #IRQ_RISING = GPIO.RISING
+    #IRQ_RISING_FALLING = GPIO.BOTH
+    #PULL_UP = GPIO.PUD_UP
+    #PULL_DOWN = GPIO.PUD_DOWN
+    #PULL_NONE = None
 
     _dict = {
         "BOARD_TYPE": 12,
@@ -580,8 +587,8 @@ class Pin(_BasicClass):
 
     def __init__(self, *value):
         super().__init__()
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
+        #GPIO.setmode(GPIO.BCM)
+        #GPIO.setwarnings(False)
 
         self.check_board_type()
 
@@ -607,26 +614,26 @@ class Pin(_BasicClass):
         else:
             self._error('Pin should be in %s, not %s' % (self._dict.keys(), pin))
         self._value = 0
-        self.init(mode, pull=setup)
+        self.init(mode)
         self._info("Pin init finished.")
         
     def check_board_type(self):
         type_pin = self.dict()["BOARD_TYPE"]
-        GPIO.setup(type_pin, GPIO.IN)
-        if GPIO.input(type_pin) == 0:
-            self._dict = self._dict_1
-        else:
-            self._dict = self._dict_2
-
-    def init(self, mode, pull=PULL_NONE):
-        self._pull = pull
+        #GPIO.setup(type_pin, GPIO.IN)
+        #if GPIO.input(type_pin) == 0:
+            #self._dict = self._dict_1
+        #else:
+           # self._dict = self._dict_2
+    
+    def init(self, mode, ):
+        #self._pull = pull
         self._mode = mode
-        if mode != None:
-            if pull != None:
-                GPIO.setup(self._pin, mode, pull_up_down=pull)
-            else:
-                GPIO.setup(self._pin, mode)
-
+        #if mode != None:
+            #if pull != None:
+                #GPIO.setup(self._pin, mode, pull_up_down=pull)
+            #else:
+                #GPIO.setup(self._pin, mode)
+    
     def dict(self, *_dict):
         if len(_dict) == 0:
             return self._dict
@@ -649,10 +656,10 @@ class Pin(_BasicClass):
             return result
         else:
             value = value[0]
-            if self._mode in [None, self.IN]:
-                self.mode(self.OUT)
-            GPIO.output(self._pin, value)
-            return value
+            #if self._mode in [None, self.IN]:
+                #self.mode(self.OUT)
+            #GPIO.output(self._pin, value)
+            #return value
 
     def on(self):
         return self.value(1)
@@ -712,3 +719,122 @@ class Pin(_BasicClass):
 
         def __init__(self):
             pass
+
+class Grayscale_Module(object):
+
+    REFERENCE_DEFAULT = [1000]*3
+
+    def __init__(self, pin0, pin1, pin2, reference=None):
+        self.chn_0 = ADC(pin0)
+        self.chn_1 = ADC(pin1)
+        self.chn_2 = ADC(pin2)
+        if reference is None:
+            self.reference = self.REFERENCE_DEFAULT
+        else:
+            self.set_reference(reference)
+
+    def set_reference(self, reference):
+        if isinstance(reference, int) or isinstance(reference, float):
+            self.reference = [reference] * 3
+        elif isinstance(reference, list) and len(reference) != 3:
+            self.reference = reference
+        else:
+            raise TypeError("reference parameter must be \'int\', \'float\', or 1*3 list.")
+
+    def get_line_status(self,fl_list):
+
+        if fl_list[0] > self.reference[0] and fl_list[1] > self.reference[1] and fl_list[2] > self.reference[2]:
+            return 'stop'
+            
+        elif fl_list[1] <= self.reference[1]:
+            return 'forward'
+        
+        elif fl_list[0] <= self.reference[0]:
+            return 'right'
+
+        elif fl_list[2] <= self.reference[2]:
+            return 'left'
+
+    def get_grayscale_data(self):
+        adc_value_list = []
+        adc_value_list.append(self.chn_0.read())
+        adc_value_list.append(self.chn_1.read())
+        adc_value_list.append(self.chn_2.read())
+        return adc_value_list
+
+class Ultrasonic():
+    def __init__(self, trig, echo, timeout=0.02):
+        self.trig = trig
+        self.echo = echo
+        self.timeout = timeout
+
+    def _read(self):
+        self.trig.low()
+        time.sleep(0.01)
+        self.trig.high()
+        time.sleep(0.00001)
+        self.trig.low()
+        pulse_end = 0
+        pulse_start = 0
+        timeout_start = time.time()
+        while self.echo.value()==0:
+            pulse_start = time.time()
+            if pulse_start - timeout_start > self.timeout:
+                return -1
+        while self.echo.value()==1:
+            pulse_end = time.time()
+            if pulse_end - timeout_start > self.timeout:
+                return -1
+        during = pulse_end - pulse_start
+        cm = round(during * 340 / 2 * 100, 2)
+        return cm
+
+    def read(self, times=10):
+        for i in range(times):
+            a = self._read()
+            if a != -1:
+                return a
+        return -1
+                
+class DS18X20():
+    def __init__(self, *args, **kargs):
+        # self.pin = pin
+        pass
+    
+    def scan(self):
+        import os
+        roms = []
+        for rom in os.listdir('/sys/bus/w1/devices'):
+            if rom.startswith('28-'):
+                roms.append(rom)
+        return roms
+
+    def convert_temp(self):
+        pass
+    
+    def read_temp(self, rom):
+        location = '/sys/bus/w1/devices/' + rom + '/w1_slave'
+        with open(location) as f:
+            text = f.read()
+        secondline = text.split("\n")[1]
+        temperaturedata = secondline.split(" ")[9]
+        temperature = float(temperaturedata[2:])
+        temperature = temperature / 1000
+        return temperature
+
+    def read(self, unit=1):
+        # unit=0:  Fahrenheit
+        # unit=1:  degree Celsius
+        self.roms = self.scan()
+        self.convert_temp()
+        temps = []
+        for rom in self.roms:
+            temp = self.read_temp(rom)
+            if unit == 0:
+                temp = 32 + temp * 1.8
+            temps.append(temp)
+        if len(temps) == 0:
+            raise IOError("Cannot detect any DS18X20, please check the connection")
+        elif len(temps) == 1:
+            temps = temps[0]
+        return temps
