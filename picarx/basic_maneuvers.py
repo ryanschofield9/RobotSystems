@@ -14,7 +14,7 @@ class Maneuvers ():
     def parallel_park(self):
         logging.debug("Backing up at 70 degree angle for 2 seconds")
         car.backward(100, 85)
-        time.sleep(1)
+        time.sleep(2)
         
         logging.debug("Backing up at 50 degree angle for 1 second")
         car.backward(100, 55)
@@ -28,7 +28,7 @@ class Maneuvers ():
         time.sleep(1)
 
         logging.debug("Going forward at 10 degree angle for 1 second")
-        car.forward(100, 20)
+        car.forward(100, 15)
         time.sleep(0.5)
 
         logging.debug("Going forward at 0 degree angle for 1 second")
