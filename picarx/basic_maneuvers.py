@@ -28,7 +28,7 @@ class Maneuvers ():
         time.sleep(1)
 
         logging.debug("Going forward at 10 degree angle for 1 second")
-        car.forward(100, 15)
+        car.forward(100, 10)
         time.sleep(0.5)
 
         logging.debug("Going forward at 0 degree angle for 1 second")
