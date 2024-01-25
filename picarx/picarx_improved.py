@@ -298,8 +298,8 @@ class Interpreter():
         self.dif_lm = self.val_l - self.val_m
         self.dif_rm = self.val_r - self.val_m 
 
-        self.norm_lm = abs(self.dif_lm/ self.avg) 
-        self.norm_rm = abs(self.dif_rm/self.avg)
+        self.norm_lm = (self.dif_lm/ self.avg) 
+        self.norm_rm = (self.dif_rm/self.avg)
         print (self.norm_lm)
         print (self.norm_rm)
         print(self.sensitivity)
