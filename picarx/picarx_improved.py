@@ -290,43 +290,36 @@ class Interpreter():
         self.polarity = polarity_given
     
     def processing(self,values): 
-        self.val_l = values[0]
-        self.val_m = values[1]
-        self.val_r = values[2]
-
+        #self.val_l = values[0]
+        #self.val_m = values[1]
+        #self.val_r = values[2]
+        self.val_l = 100
+        self.val_m = 700
+        self.val_r = 715
+        
         self.avg = (self.val_l + self.val_m + self.val_r)/3
         self.dif_lm = self.val_l - self.val_m
         self.dif_rm = self.val_r - self.val_m 
 
-        self.norm_lm = self.dif_lm/ self.avg 
-        self.norm_rm = self.dif_rm/self.avg
+        self.norm_lm = abs(self.dif_lm/ self.avg) 
+        self.norm_rm = abs(self.dif_rm/self.avg)
+
 
         if self.polarity == 1: #the line is lighter than the floor 
+            print("here")
             if self.norm_lm > self.sensitivity:
                 #if there is a big step up in light from the middle 
                 self.result = 1 # right wheel is far off the line   
-            elif self.norm_lm < self.sensitivity: 
-                #if there is a big step down in light from the middle 
-                self.result = -0.5 # left wheel is a little off the line 
             elif self.norm_rm > self.sensitivity: 
                 # if there is a big step up in light from the middle 
-                self.result = -1 # left wheel is far off the line 
-            elif self.norm_rm < self.sensitivity: 
-                # if there us a big step down in light from the middle 
-                self.result = 0.5 # right wheel is a little off the line 
+                self.result = -1 # left wheel is far off the line  
             else: 
                 self.result = 0 
             
         else: #the line is darker than the floor 
-            if self.norm_lm > self.sensitivity:
-                #if there is a big step up in light from the middle 
-                self.result = -0.5 # left wheel is a little off the line   
-            elif self.norm_lm < self.sensitivity: 
+            if self.norm_lm < self.sensitivity: 
                 #if there is a big step down in light from the middle 
-                self.result = 1 # right wheel is far off the line  
-            elif self.norm_rm > self.sensitivity: 
-                # if there is a big step up in light from the middle 
-                self.result = 0.5 # right wheel is a little off the line  
+                self.result = 1 # right wheel is far off the line   
             elif self.norm_rm < self.sensitivity: 
                 # if there us a big step down in light from the middle 
                 self.result = -1 #left wheel is far off the line
