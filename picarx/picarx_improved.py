@@ -290,13 +290,10 @@ class Interpreter():
         self.polarity = polarity_given
     
     def processing(self,values): 
-        #self.val_l = values[0]
-        #self.val_m = values[1]
-        #self.val_r = values[2]
-        self.val_l = 100
-        self.val_m = 700
-        self.val_r = 715
-        
+        self.val_l = values[0]
+        self.val_m = values[1]
+        self.val_r = values[2]
+
         self.avg = (self.val_l + self.val_m + self.val_r)/3
         self.dif_lm = self.val_l - self.val_m
         self.dif_rm = self.val_r - self.val_m 
