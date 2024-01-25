@@ -330,11 +330,14 @@ class Interpreter():
        
 
 if __name__ == "__main__":
+
     print("here")
     #px.forward(50)
     sensor = Sensor()
-    reading = sensor.sensor_reading()
-    print(reading)
+    while True:
+        reading = sensor.sensor_reading()
+        print(reading)
+        sleep(0.5)
     interpret = Interpreter()
     print(interpret.processing(reading))
     time.sleep(1)
