@@ -271,10 +271,26 @@ class Picarx(object):
         else:
             raise ValueError("grayscale reference must be a 1*3 list")
 
+px = Picarx()
+
+class Sensor():
+    def __init__(self):
+       self.grayscale_pin_r = ADC('A0')
+       self.grayscale_pin_m = ADC('A1')
+       self.grayscale_pin_l = ADC('A2')
+       self.grayscale = Grayscale_Module(self.grayscale_pin_r, self.grayscale_pin_m, self.grayscale_pin_l, reference=None)
+    
+    def sensor_reading (self):
+       return px.get_grayscale_data()
+       
+       
+
 if __name__ == "__main__":
     print("here")
-    px = Picarx()
-    px.forward(50)
+    #px.forward(50)
+    sensor = Sensor()
+    reading = sensor.sensor_reading()
+    print(reading)
     time.sleep(1)
     px.stop()
 
