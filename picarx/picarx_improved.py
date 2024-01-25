@@ -281,8 +281,13 @@ class Sensor():
        self.grayscale = Grayscale_Module(self.grayscale_pin_r, self.grayscale_pin_m, self.grayscale_pin_l, reference=None)
     
     def sensor_reading (self):
-       return px.get_grayscale_data()
-       
+        return list.copy(self.grayscale.read())
+
+class Interpreter():
+    def __init__(self, sensitivity:float = 1.0, 
+                 polarity: float = 1.0 ):
+        self.x = 0 
+        
        
 
 if __name__ == "__main__":
