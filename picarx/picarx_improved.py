@@ -337,7 +337,7 @@ if __name__ == "__main__":
     while True:
         reading = sensor.sensor_reading()
         print(reading)
-        sleep(0.5)
+        time.sleep(0.5)
     interpret = Interpreter()
     print(interpret.processing(reading))
     time.sleep(1)
