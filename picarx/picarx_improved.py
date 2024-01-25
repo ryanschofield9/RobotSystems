@@ -284,7 +284,7 @@ class Sensor():
         return list.copy(self.grayscale.read())
 
 class Interpreter():
-    def __init__(self, sensitivity_given:float = 0.5, 
+    def __init__(self, sensitivity_given:float = 0.1, 
                  polarity_given:int = 1 ):
         self.sensitivity= sensitivity_given
         self.polarity = polarity_given
@@ -300,7 +300,8 @@ class Interpreter():
 
         self.norm_lm = abs(self.dif_lm/ self.avg) 
         self.norm_rm = abs(self.dif_rm/self.avg)
-
+        print (self.norm_lm)
+        print (self.norm_rm)
 
         if self.polarity == 1: #the line is lighter than the floor 
             print("here")
