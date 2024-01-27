@@ -191,9 +191,8 @@ class Picarx(object):
         self.set_motor_speed(1, speed)
         self.set_motor_speed(2, speed)
 
-    def backward(self, speed, angle):
-        current_angle = angle + 10
-
+    def backward(self, speed): 
+        current_angle = self.dir_current_angle
         if current_angle != 0:
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:
@@ -211,14 +210,15 @@ class Picarx(object):
             self.set_motor_speed(2, speed)  
             
 
-    def forward(self, speed, angle):
-        current_angle = angle -2
+    def forward(self, speed):
+        current_angle = self.dir_current_angle
         if current_angle != 0:
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:
                 abs_current_angle = self.DIR_MAX
             #power_scale = (100 - abs_current_angle) / 100.0
             power_scale = numpy.arctan(4*numpy.tan(current_angle)/(4+0.5*6 *numpy.tan(current_angle )))
+            
             if (current_angle / abs_current_angle) > 0:
                 self.set_motor_speed(1, 1*speed * power_scale)
                 self.set_motor_speed(2, -speed) 
@@ -282,6 +282,8 @@ class Sensor():
     
     def sensor_reading (self):
         return list.copy(self.grayscale.read())
+
+sensor = Sensor()
 
 class Interpreter():
     def __init__(self, sensitivity_given:float = 0.2, 
@@ -364,6 +366,8 @@ class Interpreter():
                 else: 
                     self.result = 1 # right side and middle is off 
 
+interpret = Interpreter()
+
 class Controller(): 
     def __init__(self, scaling_factor_given:float = 1.0):
          self.scaling_factor = scaling_factor_given
@@ -386,22 +390,37 @@ class Controller():
         else: 
             angle = self.scaling_factor * -50
         
-        px.forward(100,angle)
+        px.set_dir_servo_angle(angle) 
+
         return angle 
 
+controller = Controller()
+
+def follow_line():
+    reading = sensor.sensor_reading()
+    result = interpret.processing(reading)
+    angle = controller.control_car(result)
+    px.forward(100)
+    print(angle)
+    print("done")
 
 
 if __name__ == "__main__":
 
     #print("here")
     #px.forward(50)
-    sensor = Sensor()
-    #while True:
-    reading = sensor.sensor_reading()
-        #print(reading)
-        #time.sleep(0.5)
-    interpret = Interpreter()
-    print(interpret.processing(reading))
-    time.sleep(1)
+    #sensor = Sensor()
+    while True:
+        reading = sensor.sensor_reading()
+        print(reading)
+        time.sleep(0.5)
+    #interpret = Interpreter()
+    #print(interpret.processing(reading))
+    #time.sleep(1)
+    #px.set_dir_servo_angle(-50)
+    #px.forward(100)
+    #time.sleep(1)
+    #follow_line()
     px.stop()
+    print(time.time())
 
