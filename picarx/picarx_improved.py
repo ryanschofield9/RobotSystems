@@ -288,56 +288,93 @@ class Interpreter():
                  polarity_given:int = 1 ):
         self.sensitivity= sensitivity_given
         self.polarity = polarity_given
+        self.dif = [0, 0, 0]
+        self.norm = [0, 0, 0]
     
     def processing(self,values): 
         self.val_l = values[0]
         self.val_m = values[1]
         self.val_r = values[2]
+        
+        #self.val_l = 800
+        #self.val_m = 800
+        #self.val_r = 800
 
         self.avg = (self.val_l + self.val_m + self.val_r)/3
-        self.dif_lm = self.val_l - self.val_m
-        self.dif_rm = self.val_r - self.val_m 
+        self.dif[0] = self.val_l - self.avg
+        self.dif[1] = self.val_m - self.avg 
+        self.dif[2] = self.val_r - self.avg 
 
-        self.norm_lm = (self.dif_lm/ self.avg) 
-        self.norm_rm = (self.dif_rm/self.avg)
-        print (self.norm_lm)
-        print (self.norm_rm)
-        print(self.sensitivity)
-        if self.polarity == 1: #the line is lighter than the floor 
-            print("here")
-            if self.norm_lm > self.sensitivity:
-                #if there is a big step up in light from the middle 
-                self.result = 1 # right wheel is far off the line   
-            elif self.norm_rm > self.sensitivity: 
-                # if there is a big step up in light from the middle 
-                self.result = -1 # left wheel is far off the line  
-            else: 
-                self.result = 0 
-            
-        else: #the line is darker than the floor 
-            if self.norm_lm < self.sensitivity: 
-                #if there is a big step down in light from the middle 
-                self.result = 1 # right wheel is far off the line   
-            elif self.norm_rm < self.sensitivity: 
-                # if there us a big step down in light from the middle 
-                self.result = -1 #left wheel is far off the line
-            else: 
-                self.result = 0 
+        self.norm[0]= abs(self.dif[0]/ self.avg)
+        self.norm[1] = abs(self.dif[1]/self.avg)
+        self.norm[2] = abs(self.dif[2]/self.avg)
+    
+        self.is_significant()
+        self.changes()
+        self.get_results() 
         
         return self.result 
+    
+    def is_significant (self):
+        self.significant = [0, 0, 0] 
+        for i, x in enumerate (self.norm):
+            if x > self.sensitivity:
+                self.significant[i] = 1
 
-        
+
+    def changes (self):
+        if self.significant == [0, 0, 0]:
+            pass 
+        elif self.polarity == 1: # The line is darker than the floor (lighter == higher readings)
+            for i,x in enumerate(self.significant): 
+                if x == 1:
+                    if self.dif[i] < 0: 
+                        self.switch()
+        else: # The line is lighter than the floor (darker == lower )
+            for i,x in enumerate(self.significant): 
+                if x == 1:
+                    if self.dif[i] > 0: 
+                        self.switch()
+
+    def switch(self):
+        for i,x in enumerate(self.significant):
+            if x == 0: 
+                self.significant[i] = 1
+            else: 
+                self.significant[i] = 0 
+
+    def get_results(self):
+        self.add = 0
+        if self.significant == [1, 0, 1]:
+            self.result = 0 
+        else: 
+            for i,x in enumerate(self.significant):
+                if x == 1: 
+                    self.add = self.add + 1
+            if self.add == 0: 
+                self.result = 0 
+            elif self.add == 1: 
+                if self.significant[0] == 1:
+                    self.result = -0.5 # just left side is off 
+                else: 
+                    self.result = 0.5 # just right side is off 
+            else: 
+                if self.significant[0] == 1:
+                    self.result = -1 # left side and middle is off 
+                else: 
+                    self.result = 1 # right side and middle is off 
+
        
 
 if __name__ == "__main__":
 
-    print("here")
+    #print("here")
     #px.forward(50)
     sensor = Sensor()
-    while True:
-        reading = sensor.sensor_reading()
-        print(reading)
-        time.sleep(0.5)
+    #while True:
+    reading = sensor.sensor_reading()
+        #print(reading)
+        #time.sleep(0.5)
     interpret = Interpreter()
     print(interpret.processing(reading))
     time.sleep(1)
