@@ -198,8 +198,8 @@ class Picarx(object):
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:
                 abs_current_angle = self.DIR_MAX
-            #power_scale = (100 - abs_current_angle) / 100.0 
-            power_scale = numpy.arctan(4*numpy.tan(current_angle)/(4+0.5*6 *numpy.tan(current_angle )))
+            power_scale = (100 - abs_current_angle) / 100.0 
+            #power_scale = numpy.arctan(4*numpy.tan(current_angle)/(4+0.5*6 *numpy.tan(current_angle )))
             if (current_angle / abs_current_angle) > 0:
                 self.set_motor_speed(1, -1*speed)
                 self.set_motor_speed(2, speed * power_scale)
