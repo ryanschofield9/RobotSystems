@@ -364,7 +364,32 @@ class Interpreter():
                 else: 
                     self.result = 1 # right side and middle is off 
 
-       
+class Controller(): 
+    def __init__(self, scaling_factor_given:float = 1.0):
+         self.scaling_factor = scaling_factor_given
+    
+    def control_car(self, result):
+        #result = value in range [-1, 1] 
+        # -1 means really far left from line 
+        # -0.5 means a little left from line 
+        # 0 means straight on line 
+        # 0.5 means a little right from line 
+        # 1 means really far right from line 
+        if result == -1: 
+            angle = self.scaling_factor * 50
+        elif result == -0.5: 
+            angle = self.scaling_factor * 30
+        elif result == 0: 
+            angle = 0
+        elif result == 0.5: 
+            angle = self.scaling_factor * -30
+        else: 
+            angle = self.scaling_factor * -50
+        
+        px.forward(100,angle)
+        return angle 
+
+
 
 if __name__ == "__main__":
 
