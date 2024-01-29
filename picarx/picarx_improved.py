@@ -415,12 +415,12 @@ if __name__ == "__main__":
     #print("here")
     #px.forward(50)
     #sensor = Sensor()
-    while True:
-        reading = sensor.sensor_reading()
-        print(reading)
-        result = interpret.processing(reading)
-        print(result)
-        time.sleep(0.5)
+    #while True:
+        #reading = sensor.sensor_reading()
+        #print(reading)
+        #result = interpret.processing(reading)
+        #print(result)
+        #time.sleep(0.5)
         
     #interpret = Interpreter()
     #print(interpret.processing(reading))
