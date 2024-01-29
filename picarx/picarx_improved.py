@@ -427,7 +427,7 @@ if __name__ == "__main__":
     #time.sleep(1)
     #follow_line()
     start_time = time.time()
-    run_time = 5
+    run_time = 8
     px.set_dir_servo_angle(0)
     while (time.time() - start_time < run_time):
         follow_line()
