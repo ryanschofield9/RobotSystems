@@ -422,9 +422,9 @@ if __name__ == "__main__":
     #time.sleep(1)
     #follow_line()
     start_time = time.time()
-    run_time = 5 
+    run_time = 2 
     while (time.time() - start_time < run_time):
-        print("running") 
+        follow_line()
     
     px.stop()
     print("stop")
