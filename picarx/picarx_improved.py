@@ -332,12 +332,12 @@ class Interpreter():
         elif self.polarity == 1: # The line is darker than the floor (lighter == higher readings)
             for i,x in enumerate(self.significant): 
                 if x == 1:
-                    if self.dif[i] < 0: 
+                    if self.dif[i] > 0: 
                         self.switch()
         else: # The line is lighter than the floor (darker == lower )
             for i,x in enumerate(self.significant): 
                 if x == 1:
-                    if self.dif[i] > 0: 
+                    if self.dif[i] < 0: 
                         self.switch()
 
     def switch(self):
