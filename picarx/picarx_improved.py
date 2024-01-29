@@ -406,7 +406,7 @@ def follow_line():
     print(reading)
     result = interpret.processing(reading)
     angle = controller.control_car(result)
-    px.forward(50)
+    px.forward(30)
     time.sleep(0.05)
     
 
