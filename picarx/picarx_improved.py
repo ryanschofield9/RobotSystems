@@ -385,15 +385,15 @@ class Controller():
         # 0.5 means a little right from line 
         # 1 means really far right from line 
         if result == -1: 
-            angle = self.scaling_factor * 15/2
+            angle = self.scaling_factor * 8
         elif result == -0.5: 
-            angle = self.scaling_factor * 5/2
+            angle = self.scaling_factor * 3
         elif result == 0: 
             angle = 0
         elif result == 0.5: 
-            angle = self.scaling_factor * -15/2
+            angle = self.scaling_factor * -8
         else: 
-            angle = self.scaling_factor * -5/2
+            angle = self.scaling_factor * -3
         
         px.set_dir_servo_angle(angle) 
 
@@ -428,11 +428,11 @@ if __name__ == "__main__":
     #follow_line()
     start_time = time.time()
     run_time = 20
-    px.set_dir_servo_angle(-8)
-    px.forward(30)
-    time.sleep(3)
-    #while (time.time() - start_time < run_time):
-        #follow_line()
+    px.set_dir_servo_angle(0)
+    #px.forward(30)
+    #time.sleep(3)
+    while (time.time() - start_time < run_time):
+        follow_line()
         #px.forward(50)
         
     
