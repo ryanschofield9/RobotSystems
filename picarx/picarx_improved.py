@@ -330,7 +330,7 @@ class Interpreter():
         
         if self.significant == [0, 0, 0]:
             pass 
-        elif self.significant == [0 1 0]:
+        elif self.significant == [0, 1, 0]:
             pass 
         elif self.polarity == 1: # The line is darker than the floor (lighter == higher readings)
             for i,x in enumerate(self.significant): 
