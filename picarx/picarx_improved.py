@@ -348,7 +348,7 @@ class Interpreter():
 
     def get_results(self):
         self.add = 0
-        if self.significant == [1, 0, 1]:
+        if self.significant == [0, 1, 0]:
             self.result = 0 
         else: 
             for i,x in enumerate(self.significant):
