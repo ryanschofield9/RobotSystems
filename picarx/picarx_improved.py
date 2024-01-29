@@ -387,13 +387,13 @@ class Controller():
         if result == -1: 
             angle = self.scaling_factor * 8
         elif result == -0.5: 
-            angle = self.scaling_factor * 3
+            angle = self.scaling_factor * 5
         elif result == 0: 
             angle = 0
         elif result == 0.5: 
             angle = self.scaling_factor * -8
         else: 
-            angle = self.scaling_factor * -3
+            angle = self.scaling_factor * -5
         
         px.set_dir_servo_angle(angle) 
 
@@ -428,11 +428,11 @@ if __name__ == "__main__":
     #follow_line()
     start_time = time.time()
     run_time = 8
-    px.set_dir_servo_angle(8)
-    px.forward(30)
-    time.sleep(3)
-    #while (time.time() - start_time < run_time):
-        #follow_line()
+    px.set_dir_servo_angle(0)
+    #px.forward(30)
+    #time.sleep(3)
+    while (time.time() - start_time < run_time):
+        follow_line()
         #px.forward(50)
         
     
