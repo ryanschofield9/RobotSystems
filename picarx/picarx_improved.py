@@ -410,10 +410,10 @@ if __name__ == "__main__":
     #print("here")
     #px.forward(50)
     #sensor = Sensor()
-    while True:
-        reading = sensor.sensor_reading()
-        print(reading)
-        time.sleep(0.5)
+    #while True:
+        #reading = sensor.sensor_reading()
+        #print(reading)
+        #time.sleep(0.5)
     #interpret = Interpreter()
     #print(interpret.processing(reading))
     #time.sleep(1)
@@ -421,6 +421,11 @@ if __name__ == "__main__":
     #px.forward(100)
     #time.sleep(1)
     #follow_line()
+    start_time = time.time()
+    run_time = 5 
+    while (time.time() - start_time < run_time):
+        print("running") 
+    
     px.stop()
-    print(time.time())
+    print("stop")
 
