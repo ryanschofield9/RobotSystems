@@ -385,15 +385,15 @@ class Controller():
         # 0.5 means a little right from line 
         # 1 means really far right from line 
         if result == -1: 
-            angle = self.scaling_factor * 15
+            angle = self.scaling_factor * 15/2
         elif result == -0.5: 
-            angle = self.scaling_factor * 5
+            angle = self.scaling_factor * 5/2
         elif result == 0: 
             angle = 0
         elif result == 0.5: 
-            angle = self.scaling_factor * -15
+            angle = self.scaling_factor * -15/2
         else: 
-            angle = self.scaling_factor * -5
+            angle = self.scaling_factor * -5/2
         
         px.set_dir_servo_angle(angle) 
 
@@ -407,7 +407,7 @@ def follow_line():
     result = interpret.processing(reading)
     angle = controller.control_car(result)
     px.forward(50)
-    time.sleep(0.1)
+    time.sleep(0.05)
     
 
 if __name__ == "__main__":
