@@ -314,6 +314,7 @@ class Interpreter():
         self.is_significant()
         self.changes()
         self.get_results() 
+        print(self.significant)
         
         return self.result 
     
@@ -399,11 +400,8 @@ controller = Controller()
 def follow_line():
     reading = sensor.sensor_reading()
     result = interpret.processing(reading)
-    print("result")
-    print(result)
     angle = controller.control_car(result)
-    px.forward(100)
-    print(angle)
+    px.forward(20)
     
 
 if __name__ == "__main__":
@@ -424,12 +422,12 @@ if __name__ == "__main__":
     #follow_line()
     start_time = time.time()
     run_time = 2 
-    px.set_dir_servo_angle(0)
+    #px.set_dir_servo_angle(0)
     while (time.time() - start_time < run_time):
-        #follow_line()
-        px.forward(100)
+        follow_line()
+        #px.forward(100)
         
     
     px.stop()
     print("stop")
-
+ 
