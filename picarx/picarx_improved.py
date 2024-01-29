@@ -429,10 +429,10 @@ if __name__ == "__main__":
     start_time = time.time()
     run_time = 8
     px.set_dir_servo_angle(0)
-    #px.forward(30)
-    #time.sleep(3)
-    while (time.time() - start_time < run_time):
-        follow_line()
+    px.forward(30)
+    time.sleep(3)
+    #while (time.time() - start_time < run_time):
+        #follow_line()
         #px.forward(50)
         
     
