@@ -399,11 +399,12 @@ controller = Controller()
 def follow_line():
     reading = sensor.sensor_reading()
     result = interpret.processing(reading)
+    print("result")
+    print(result)
     angle = controller.control_car(result)
     px.forward(100)
     print(angle)
-    print("done")
-
+    
 
 if __name__ == "__main__":
 
