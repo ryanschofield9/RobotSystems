@@ -341,9 +341,9 @@ class Interpreter():
             for i,x in enumerate(self.significant): 
                 if x == 1:
                     if self.dif[i] < 0: 
-                        self.switch(i)
+                        self.switch()
 
-    def switch(self, i):
+    def switch(self):
         for i,x in enumerate(self.significant):
             if x == 0: 
                 self.significant[i] = 1
