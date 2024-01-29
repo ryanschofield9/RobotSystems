@@ -402,7 +402,7 @@ def follow_line():
     result = interpret.processing(reading)
     angle = controller.control_car(result)
     px.forward(50)
-    time.sleep(0.5)
+    time.sleep(0.1)
     
 
 if __name__ == "__main__":
