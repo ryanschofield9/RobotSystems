@@ -344,11 +344,11 @@ class Interpreter():
                         self.switch(i)
 
     def switch(self, i):
-        #for i,x in enumerate(self.significant):
-        if self.dif[i] == 0: 
-            self.significant[i] = 1
-        else: 
-            self.significant[i] = 0 
+        for i,x in enumerate(self.significant):
+            if x == 0: 
+                self.significant[i] = 1
+            else: 
+                self.significant[i] = 0 
 
     def get_results(self):
         self.add = 0
