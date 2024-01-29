@@ -340,7 +340,7 @@ class Interpreter():
         else: # The line is lighter than the floor (darker == lower )
             for i,x in enumerate(self.significant): 
                 if x == 1:
-                    if self.dif[i] > 0: 
+                    if self.dif[i] < 0: 
                         self.switch()
 
     def switch(self):
@@ -415,10 +415,13 @@ if __name__ == "__main__":
     #print("here")
     #px.forward(50)
     #sensor = Sensor()
-    #while True:
-        #reading = sensor.sensor_reading()
-        #print(reading)
-        #time.sleep(0.5)
+    while True:
+        reading = sensor.sensor_reading()
+        print(reading)
+        result = interpret.processing(reading)
+        print(result)
+        time.sleep(0.5)
+        
     #interpret = Interpreter()
     #print(interpret.processing(reading))
     #time.sleep(1)
