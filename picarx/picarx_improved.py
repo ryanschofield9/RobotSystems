@@ -340,15 +340,15 @@ class Interpreter():
         else: # The line is lighter than the floor (darker == lower )
             for i,x in enumerate(self.significant): 
                 if x == 1:
-                    if self.dif[i] > 0: 
-                        self.switch()
+                    if self.dif[i] < 0: 
+                        self.switch(i)
 
-    def switch(self):
-        for i,x in enumerate(self.significant):
-            if x == 0: 
-                self.significant[i] = 1
-            else: 
-                self.significant[i] = 0 
+    def switch(self, i):
+        #for i,x in enumerate(self.significant):
+        if self.dif[i] == 0: 
+            self.significant[i] = 1
+        else: 
+            self.significant[i] = 0 
 
     def get_results(self):
         self.add = 0
