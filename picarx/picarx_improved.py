@@ -312,6 +312,7 @@ class Interpreter():
         self.norm[2] = abs(self.dif[2]/self.avg)
     
         self.is_significant()
+        print(self.significant)
         self.changes()
         self.get_results() 
         print(self.significant)
