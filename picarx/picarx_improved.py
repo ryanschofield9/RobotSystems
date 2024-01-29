@@ -423,10 +423,10 @@ if __name__ == "__main__":
     #follow_line()
     start_time = time.time()
     run_time = 2 
-    #px.set_dir_servo_angle(0)
+    px.set_dir_servo_angle(20)
     while (time.time() - start_time < run_time):
-        follow_line()
-        #px.forward(50)
+        #follow_line()
+        px.forward(50)
         
     
     px.stop()
