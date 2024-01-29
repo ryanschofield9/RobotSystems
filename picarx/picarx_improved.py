@@ -401,7 +401,7 @@ def follow_line():
     reading = sensor.sensor_reading()
     result = interpret.processing(reading)
     angle = controller.control_car(result)
-    px.forward(20)
+    px.forward(50)
     
 
 if __name__ == "__main__":
@@ -424,8 +424,8 @@ if __name__ == "__main__":
     run_time = 2 
     #px.set_dir_servo_angle(0)
     while (time.time() - start_time < run_time):
-        #follow_line()
-        px.forward(50)
+        follow_line()
+        #px.forward(50)
         
     
     px.stop()
