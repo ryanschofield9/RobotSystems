@@ -108,7 +108,7 @@ class Geom():
         return np.array([[box[0][0] + w,box[0][1] + h],[box[1][0] + w,box[1][1] + h], [box[2][0] + w,box[2][1] + h],[box[3][0] + w,box[3][1] + h]])
 
 
-    def calc_box_vector(box):
+    def calc_box_vector(self,box):
         v_side = self.calc_line_length(box[0], box[3])
         h_side = self.calc_line_length(box[0], box[1])
         idx = [0, 1, 2, 3]
