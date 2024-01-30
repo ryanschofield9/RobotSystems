@@ -12,7 +12,7 @@ import math
 import os
 import logging
 
-from picarx_improved import Picarx
+#from picarx_improved import Picarx
 
 px = Picarx()
 
@@ -384,41 +384,47 @@ class Interpreter():
         
 interpret = Interpreter()
 
+class Controller_Cam():
+    def control_car():
+        edge = picTaker.takePicture()
+        crop = picTaker.lastCrop
+        angle, shift = interpret.process(crop, draw= True)
+        norm_ang_diff = 1
+        if((angle != 0) and (angle != None)):
+            max_angle = 90
+            angle_diff = angle-max_angle
+            norm_ang_diff = -angle_diff/max_angle
+	
+        if((shift != 0) and (shift != None)):
+            max_shift = 90
+            norm_shift = shift/max_shift
+            angle = 30*(0.9*norm_shift + 0.1*norm_ang_diff)
+        else: 
+            angle = 0 
+        
+        return angle 
 
 
 
 if __name__ == "__main__":
     sensor=Sensors()
     
-    #while True:
+    while True:
         
-    edge = picTaker.takePicture()
-    crop = picTaker.lastCrop
-    '''
-    #reading = sensor.readings()
-    plt.subplot(211)
-    plt.imshow(crop,cmap='gray')
-    plt.subplot(212)
-    plt.imshow(edge,cmap='gray')
-    #Plot images, then pause for 3 seconds
-    plt.show(block=False)
-    plt.pause(3)
-    plt.close()
-    '''
-    angle, shift = interpret.process(crop, draw= True)
-    norm_ang_diff = 1
-    if((angle != 0) and (angle != None)):
-        max_angle = 90
-        angle_diff = angle-max_angle
-        norm_ang_diff = -angle_diff/max_angle
-	
-    if((shift != 0) and (shift != None)):
-        max_shift = 90
-        norm_shift = shift/max_shift
-        px.set_dir_servo_angle(30*(0.9*norm_shift + 0.1*norm_ang_diff))
-        px.forward(35)
+        edge = picTaker.takePicture()
+        crop = picTaker.lastCrop
         
-    else:
-        px.stop()
+        #reading = sensor.readings()
+        plt.subplot(211)
+        plt.imshow(crop,cmap='gray')
+        plt.subplot(212)
+        plt.imshow(edge,cmap='gray')
+        #Plot images, then pause for 3 seconds
+        plt.show(block=False)
+        plt.pause(3)
+        plt.close()
+        
+    
+        
         
         

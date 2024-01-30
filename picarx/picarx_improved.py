@@ -18,6 +18,7 @@ logging.basicConfig(format=logging_format, level=logging.INFO,
 datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
 
+from camera_driving import Controller_Cam
 # reset robot_hat
 #reset_mcu()
 #time.sleep(0.2)
@@ -272,6 +273,7 @@ class Picarx(object):
             raise ValueError("grayscale reference must be a 1*3 list")
 
 px = Picarx()
+controller_cam = Controller_Cam()
 
 class Sensor():
     def __init__(self):
@@ -406,8 +408,16 @@ def follow_line():
     print(reading)
     result = interpret.processing(reading)
     angle = controller.control_car(result)
+    px.set_dir_servo_angle(angle)
     px.forward(25)
     time.sleep(0.025)
+
+def follow_line_cam():
+    angle = controller_cam.control_car()
+    px.set_dir_servo_angle(angle)
+    px.forward(25)
+    time.sleep(0.025)
+    
     
 
 if __name__ == "__main__":
