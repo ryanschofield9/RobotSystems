@@ -1,4 +1,4 @@
-from picarx_improved import Picarx
+#from picarx_improved import Picarx
 # class picture taker is from example code in canvas 
 import time
 
