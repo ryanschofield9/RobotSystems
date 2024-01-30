@@ -416,7 +416,7 @@ def follow_line():
 def follow_line_cam():
     angle = controller_cam.control_car()
     px.set_dir_servo_angle(angle)
-    px.forward(40)
+    px.forward(25)
     time.sleep(0.05)
     
     
