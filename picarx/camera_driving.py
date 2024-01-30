@@ -11,9 +11,6 @@ import sys
 import math
 import os
 import logging
-import geom_util as geom
-import roi
-import track_conf as tconf
 #Class to handle repeated picture taking using Raspberry Pi
 class PictureTaker():
     #Initialize camera and data stream
@@ -45,6 +42,169 @@ class PictureTaker():
         return self.lastEdges
 
 picTaker = PictureTaker()
+class Geom():
+    def calc_line(self, x1, y1, x2, y2):
+        a = float(y2 - y1) / (x2 - x1) if x2 != x1 else 0
+        b = y1 - a * x1
+        return a, b
+
+    def calc_line_length(self, p1, p2):
+        dx = p1[0] - p2[0]
+        dy = p1[1] - p2[1]
+        return math.sqrt(dx * dx + dy * dy)
+
+    def get_horz_shift(self,x, w):
+        hw = w / 2
+        return 100 * (x - hw) / hw
+
+
+    def calc_rect_area(self,rect_points):
+        a = self.calc_line_length(rect_points[0], rect_points[1])
+        b = self.calc_line_length(rect_points[1], rect_points[2])
+        return a * b
+
+    def get_vert_angle(self,p1, p2, w, h):
+        px1 = p1[0] - w/2
+        px2 = p2[0] - w/2
+        
+        py1 = h - p1[1]
+        py2 = h - p2[1]
+
+        angle = 90
+        if px1 != px2:
+            a, b = self.calc_line(px1, py1, px2, py2)
+            angle = 0
+            if a != 0:
+                x0 = -b/a
+                y1 = 1.0
+                x1 = (y1 - b) / a
+                dx = x1 - x0
+                tg = y1 * y1 / dx / dx
+                angle = 180 * np.arctan(tg) / np.pi
+                if a < 0:
+                    angle = 180 - angle
+        return angle
+
+
+    def order_box(self,box):
+        srt = np.argsort(box[:, 1])
+        btm1 = box[srt[0]]
+        btm2 = box[srt[1]]
+
+        top1 = box[srt[2]]
+        top2 = box[srt[3]]
+
+        bc = btm1[0] < btm2[0]
+        btm_l = btm1 if bc else btm2
+        btm_r = btm2 if bc else btm1
+
+        tc = top1[0] < top2[0]
+        top_l = top1 if tc else top2
+        top_r = top2 if tc else top1
+
+        return np.array([top_l, top_r, btm_r, btm_l])
+
+    def shift_box(self,box, w, h):
+        return np.array([[box[0][0] + w,box[0][1] + h],[box[1][0] + w,box[1][1] + h], [box[2][0] + w,box[2][1] + h],[box[3][0] + w,box[3][1] + h]])
+
+
+    def calc_box_vector(box):
+        v_side = self.calc_line_length(box[0], box[3])
+        h_side = self.calc_line_length(box[0], box[1])
+        idx = [0, 1, 2, 3]
+        if v_side < h_side:
+            idx = [0, 3, 1, 2]
+        return ((box[idx[0]][0] + box[idx[1]][0]) / 2, (box[idx[0]][1] + box[idx[1]][1]) / 2), ((box[idx[2]][0] + box[idx[3]][0]) / 2, (box[idx[2]][1]  +box[idx[3]][1]) / 2)
+
+geom = Geom()
+
+class ROI():
+    area = 0
+    vertices = None
+
+
+    def init_roi(self, width, height):
+        print(width,height)
+        #vertices = [(0, height), (width / 4, 3 * height / 4),(3 * width / 4, 3 * height / 4), (width, height)]
+        vertices = [(0, height), (width / 5, 1 * height / 2),(4 * width / 5, 1 * height / 2), (width, height)]
+        self.vertices = np.array([vertices], np.int32)
+        
+        blank = np.zeros((height, width, 3), np.uint8)
+        blank[:] = (255, 255, 255)
+        blank_gray = cv.cvtColor(blank, cv.COLOR_BGR2GRAY)
+        blank_cropped = self.crop_roi(blank_gray)
+        self.area = cv.countNonZero(blank_cropped)
+
+
+    def crop_roi(self, img):
+        #cv.imshow("Image", img)
+        mask = np.zeros_like(img)
+        match_mask_color = 255
+        
+        cv.fillPoly(mask, self.vertices, match_mask_color)
+        masked_image = cv.bitwise_and(img, mask)
+        return masked_image
+
+    def get_area(self):
+        return self.area
+
+    def get_vertices(self):
+        return self.vertices
+
+roi = ROI()
+
+class Track_Conf:
+    ## Picture settings
+
+    # initial grayscale threshold
+    threshold = 120
+
+    # max grayscale threshold
+    threshold_max = 180
+
+    #min grayscale threshold
+    threshold_min = 40
+
+    # iterations to find balanced threshold
+    th_iterations = 10
+
+    # min % of white in roi
+    white_min=3
+
+    # max % of white in roi
+    white_max=20
+
+    ## Driving settings
+
+    # line angle to make a turn
+    turn_angle = 45
+
+    # line shift to make an adjustment
+    shift_max = 20
+
+    # turning time of shift adjustment
+    shift_step = 0.125
+
+    # turning time of turn
+    turn_step = 0.25
+
+    # time of straight run
+    straight_run = 0.5
+
+    # attempts to find the line if lost
+    find_turn_attempts = 5
+
+    # turn step to find the line if lost
+    find_turn_step = 0.2
+
+    # max # of iterations of the whole tracking
+    max_steps = 40
+
+    # target brightness level
+    brightness = 100
+
+tconf = Track_Conf
+
 class Track():
     T = tconf.threshold
     Roi = roi.ROI()
