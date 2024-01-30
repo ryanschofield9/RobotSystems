@@ -44,7 +44,6 @@ class Sensors():
         self.readings =picTaker.takePicture()
     
     def readings(self):
-        print(self.readings)
         return self.readings 
 '''
 class Interpreter():
@@ -59,8 +58,9 @@ if __name__ == "__main__":
     sensor=Sensors()
     while True:
         edge = picTaker.takePicture()
+        print(edge)
         crop = picTaker.lastCrop
-        reading = sensor.readings()
+        #reading = sensor.readings()
         plt.subplot(211)
         plt.imshow(crop,cmap='gray')
         plt.subplot(212)
