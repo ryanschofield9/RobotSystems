@@ -5,7 +5,7 @@ import time
 from picamera import PiCamera
 from io import BytesIO
 import cv2 as cv
-import track_cv as track
+#import track_cv as track
 from matplotlib import pyplot as plt
 import numpy as np
 #Class to handle repeated picture taking using Raspberry Pi
@@ -59,7 +59,7 @@ class Interpreter():
 # help from https://docs.opencv.org/3.4/d6/d10/tutorial_py_houghlines.html for the hough line transformation 
     def process (self, frame, draw=False):
         
-        angle,shift = track.handle(frame = frame, draw=draw, inv_polarity = True, threshold= 80)
+        angle,shift = cv.handle(frame = frame, draw=draw, inv_polarity = True, threshold= 80)
         return angle, shift 
         
 interpret = Interpreter()
