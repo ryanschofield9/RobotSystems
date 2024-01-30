@@ -11,7 +11,11 @@ import sys
 import math
 import os
 import logging
+
 from picarx_improved import Picarx
+
+px = Picarx()
+
 #Class to handle repeated picture taking using Raspberry Pi
 class PictureTaker():
     #Initialize camera and data stream
