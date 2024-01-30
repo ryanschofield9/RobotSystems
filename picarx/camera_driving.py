@@ -57,7 +57,7 @@ class Interpreter():
 
 # help from https://docs.opencv.org/3.4/d6/d10/tutorial_py_houghlines.html for the hough line transformation 
     def process (self):
-        edge = sensor.readings()
+        edge = picTaker.takePicture()
         self.lines = cv.HoughLinesP(edge, 1, np.pi/180, 100, minLineLength= 100, maxLineGap =10)
         crop = picTaker.lastCrop
         for line in self.lines: 
