@@ -41,7 +41,7 @@ picTaker = PictureTaker()
 
 class Sensors():
     def __init__(self):
-        self.readings =0
+        self.readings = picTaker.takePicture()
     
     def readings(self):
         self.readings = picTaker.takePicture()
