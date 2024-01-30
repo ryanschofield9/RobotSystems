@@ -34,8 +34,24 @@ class PictureTaker():
         #To grayscale
         grayImg = cv.cvtColor(croppedImg,cv.COLOR_BGR2GRAY)
         #Find edges (might have to mess with min/max thresholds)
-        self.lastEdges = cv.Canny(grayImg,75,125)
+        self.lastEdges = cv.Canny(grayImg,50,150)
         return self.lastEdges
+
+picture = PictureTaker()
+class Sensors():
+    def __init__(self):
+        self.readings = picture.takePicture()
+    
+    def readings():
+        return self.readings 
+
+class Interpreter():
+    def __init__(self, sensitivity_given:float = 0.5, 
+                 polarity_given:int = 1):
+        self.sensitivity= sensitivity_given
+        self.polarity = polarity_given
+        
+
 
 if __name__ == "__main__":
     picTaker = PictureTaker()
