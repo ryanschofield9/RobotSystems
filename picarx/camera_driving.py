@@ -11,6 +11,7 @@ import sys
 import math
 import os
 import logging
+from picarx_improved import Picarx
 #Class to handle repeated picture taking using Raspberry Pi
 class PictureTaker():
     #Initialize camera and data stream
@@ -379,24 +380,41 @@ class Interpreter():
         
 interpret = Interpreter()
 
+
+
+
 if __name__ == "__main__":
     sensor=Sensors()
     
-    while True:
+    #while True:
         
-        edge = picTaker.takePicture()
-        crop = picTaker.lastCrop
-        '''
-        #reading = sensor.readings()
-        plt.subplot(211)
-        plt.imshow(crop,cmap='gray')
-        plt.subplot(212)
-        plt.imshow(edge,cmap='gray')
-        #Plot images, then pause for 3 seconds
-        plt.show(block=False)
-        plt.pause(3)
-        plt.close()
-        '''
-        angle, shift = interpret.process(crop, draw= True)
+    edge = picTaker.takePicture()
+    crop = picTaker.lastCrop
+    '''
+    #reading = sensor.readings()
+    plt.subplot(211)
+    plt.imshow(crop,cmap='gray')
+    plt.subplot(212)
+    plt.imshow(edge,cmap='gray')
+    #Plot images, then pause for 3 seconds
+    plt.show(block=False)
+    plt.pause(3)
+    plt.close()
+    '''
+    angle, shift = interpret.process(crop, draw= True)
+    norm_ang_diff = 1
+    if((angle != 0) and (angle != None)):
+        max_angle = 90
+        angle_diff = angle-max_angle
+        norm_ang_diff = -angle_diff/max_angle
+	
+    if((shift != 0) and (shift != None)):
+        max_shift = 90
+        norm_shift = shift/max_shift
+        px.set_dir_servo_angle(30*(0.9*norm_shift + 0.1*norm_ang_diff))
+        px.forward(35)
+        
+    else:
+        px.stop()
         
         
