@@ -450,7 +450,7 @@ if __name__ == "__main__":
     #px.forward(30)
     #time.sleep(3)
     while (time.time() - start_time < run_time):
-        follow_line_cam()
+        follow_line()
         #px.forward(50)
         
     
