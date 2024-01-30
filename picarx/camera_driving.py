@@ -1,4 +1,4 @@
-#from picarx_improved import Picarx
+from picarx_improved import Picarx
 # class picture taker is from example code in canvas 
 import time
 
@@ -45,20 +45,36 @@ class Sensors():
     
     def readings(self):
         return self.readings 
-'''
+
+sensor=Sensors()
+
 class Interpreter():
     def __init__(self, sensitivity_given:float = 0.5, 
                  polarity_given:int = 1):
         self.sensitivity= sensitivity_given
         self.polarity = polarity_given
-        
 
-'''
+# help from https://docs.opencv.org/3.4/d6/d10/tutorial_py_houghlines.html for the hough line transformation 
+    def process (self):
+        self.edges = sensor.readings()
+        self.lines = cv.HoughLinesP(self.edges, 1, np.pi/180, 100, minLineLength= 100, maxLineGap =10)
+        crop = picTaker.lastCrop
+        for line in self.lines: 
+            x1,y1,x2,y2 = line[0]
+            cv.line(crop, (x1, y1), (x2, y2), (0,255,0),2)
+        plt.imshow(crop,cmap='gray')
+        plt.show(block=False)
+        plt.pause(3)
+        plt.close()
+        
+interpret = Interpreter()
+
 if __name__ == "__main__":
     sensor=Sensors()
+    
     while True:
+        '''
         edge = picTaker.takePicture()
-        print(edge)
         crop = picTaker.lastCrop
         #reading = sensor.readings()
         plt.subplot(211)
@@ -69,3 +85,6 @@ if __name__ == "__main__":
         plt.show(block=False)
         plt.pause(3)
         plt.close()
+        '''
+        interpret.process()
+        
