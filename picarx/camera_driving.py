@@ -36,15 +36,17 @@ class PictureTaker():
         #Find edges (might have to mess with min/max thresholds)
         self.lastEdges = cv.Canny(grayImg,25,125)
         return self.lastEdges
-'''
-picture = PictureTaker()
+
+picTaker = PictureTaker()
+
 class Sensors():
     def __init__(self):
-        self.readings = picture.takePicture()
+        self.readings =picTaker.takePicture()
     
-    def readings():
+    def readings(self):
+        print(self.readings)
         return self.readings 
-
+'''
 class Interpreter():
     def __init__(self, sensitivity_given:float = 0.5, 
                  polarity_given:int = 1):
@@ -54,10 +56,11 @@ class Interpreter():
 
 '''
 if __name__ == "__main__":
-    picTaker = PictureTaker()
+    sensor=Sensors()
     while True:
         edge = picTaker.takePicture()
         crop = picTaker.lastCrop
+        reading = sensor.readings()
         plt.subplot(211)
         plt.imshow(crop,cmap='gray')
         plt.subplot(212)
