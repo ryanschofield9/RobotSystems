@@ -374,7 +374,7 @@ class Interpreter():
 # help from https://docs.opencv.org/3.4/d6/d10/tutorial_py_houghlines.html for the hough line transformation 
     def process (self, frame, draw=False):
         
-        angle,shift = track.handle_pic(frame = frame, draw=draw, inv_polarity = True, threshold= 80)
+        angle,shift = track.handle_pic(frame, draw, inv_polarity = True, threshold= 80)
         return angle, shift 
         
 interpret = Interpreter()
