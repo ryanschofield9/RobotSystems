@@ -289,7 +289,7 @@ class Sensor():
 sensor = Sensor()
 
 class Interpreter():
-    def __init__(self, sensitivity_given:float = 0.1, 
+    def __init__(self, sensitivity_given:float = 0.2, 
                  polarity_given:int = 1):
         self.sensitivity= sensitivity_given
         self.polarity = polarity_given
@@ -426,12 +426,12 @@ if __name__ == "__main__":
     #print("here")
     #px.forward(50)
     #sensor = Sensor()
-    while True:
-        reading = sensor.sensor_reading()
-        print(reading)
-        result = interpret.processing(reading)
-        print(result)
-        time.sleep(0.5)
+    #while True:
+        #reading = sensor.sensor_reading()
+        #print(reading)
+        #result = interpret.processing(reading)
+        #print(result)
+        #time.sleep(0.5)
         
     #interpret = Interpreter()
     #print(interpret.processing(reading))
