@@ -36,7 +36,7 @@ class PictureTaker():
         #Find edges (might have to mess with min/max thresholds)
         self.lastEdges = cv.Canny(grayImg,50,150)
         return self.lastEdges
-
+'''
 picture = PictureTaker()
 class Sensors():
     def __init__(self):
@@ -52,7 +52,7 @@ class Interpreter():
         self.polarity = polarity_given
         
 
-
+'''
 if __name__ == "__main__":
     picTaker = PictureTaker()
     while True:
