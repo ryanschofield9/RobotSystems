@@ -388,15 +388,15 @@ class Controller():
         # 0.5 means a little right from line 
         # 1 means really far right from line 
         if result == -1: 
-            angle = self.scaling_factor * 8
+            angle = self.scaling_factor * 20
         elif result == -0.5: 
-            angle = self.scaling_factor * 5
+            angle = self.scaling_factor * 10
         elif result == 0: 
             angle = 0
         elif result == 0.5: 
-            angle = self.scaling_factor * -8
+            angle = self.scaling_factor * -20
         else: 
-            angle = self.scaling_factor * -5
+            angle = self.scaling_factor * -10
         
         px.set_dir_servo_angle(angle) 
 
@@ -417,7 +417,7 @@ def follow_line_cam():
     angle = controller_cam.control_car()
     px.set_dir_servo_angle(angle)
     px.forward(25)
-    time.sleep(0.001)
+    time.sleep(0.1)
     
     
 
