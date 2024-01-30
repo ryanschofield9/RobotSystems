@@ -5,6 +5,7 @@ import time
 from picamera import PiCamera
 from io import BytesIO
 import cv2 as cv
+import track_cv as track
 from matplotlib import pyplot as plt
 import numpy as np
 #Class to handle repeated picture taking using Raspberry Pi
@@ -41,11 +42,11 @@ picTaker = PictureTaker()
 
 class Sensors():
     def __init__(self):
-        self.readings = picTaker.takePicture()
+        pass 
     
     def readings(self):
-        self.readings = picTaker.takePicture()
-        return self.readings 
+        readings = picTaker.takePicture()
+        return readings 
 
 sensor=Sensors()
 
@@ -56,26 +57,10 @@ class Interpreter():
         self.polarity = polarity_given
 
 # help from https://docs.opencv.org/3.4/d6/d10/tutorial_py_houghlines.html for the hough line transformation 
-    def process (self):
-        '''
-        edge = picTaker.takePicture()
-        lines = cv.HoughLinesP(edge, 1, np.pi/180, 100, minLineLength= 100, maxLineGap =10)
-        crop = picTaker.lastCrop
-        for line in lines: 
-            x1,y1,x2,y2 = line[0]
-            cv.line(crop, (x1, y1), (x2, y2), (0,255,0),2)
-        '''
-        img = cv.imread(cv.samples.findFile('sudoku.png'))
-        gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
-        edges = cv.Canny(gray,50,150,apertureSize = 3)
-        lines = cv.HoughLinesP(edges,1,np.pi/180,100,minLineLength=100,maxLineGap=10)
-        for line in lines:
-            x1,y1,x2,y2 = line[0]
-            cv.line(img,(x1,y1),(x2,y2),(0,255,0),2)
-        plt.imshow(crop,cmap='gray')
-        plt.show(block=False)
-        plt.pause(3)
-        plt.close()
+    def process (self, frame, draw=False):
+        
+        angle,shift = track.handle(frame = frame, draw=draw, inv_polarity = True, threshold= 80)
+        return angle, shift 
         
 interpret = Interpreter()
 
@@ -96,5 +81,6 @@ if __name__ == "__main__":
         plt.pause(3)
         plt.close()
         '''
-        interpret.process()
+        crop = picTaker.lastCrop
+        angle, shift = interpret.process(crop, draw= True)
         
