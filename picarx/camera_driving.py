@@ -151,7 +151,7 @@ class ROI():
     def get_vertices(self):
         return self.vertices
 
-roi = ROI()
+Roi = ROI()
 
 class Track_Conf:
     ## Picture settings
@@ -207,7 +207,7 @@ tconf = Track_Conf
 
 class Track():
     T = tconf.threshold
-    Roi = roi.ROI()
+    #Roi = roi.ROI()
     def __init__(self):
         pass
     def balance_pic(self, image, inv_polarity=False, threshold=50):
