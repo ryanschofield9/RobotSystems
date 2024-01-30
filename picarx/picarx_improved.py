@@ -445,9 +445,9 @@ if __name__ == "__main__":
     px.set_dir_servo_angle(-11)
     #px.forward(30)
     #time.sleep(3)
-    #while (time.time() - start_time < run_time):
+    while (time.time() - start_time < run_time):
         #follow_line()
-        #px.forward(50)
+        px.forward(50)
         
     
     px.stop()
