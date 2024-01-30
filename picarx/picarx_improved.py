@@ -326,7 +326,11 @@ class Interpreter():
         self.significant = [0, 0, 0] 
         for i, x in enumerate (self.norm):
             if x > self.sensitivity:
-                self.significant[i] = 1
+                if i != 2:
+                    self.significant[i] = 1
+                else: 
+                    if x >self.sensitity * 2:
+                        self.significant[i] = 1
 
 
     def changes (self):
