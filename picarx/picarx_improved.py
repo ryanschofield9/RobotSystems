@@ -329,7 +329,7 @@ class Interpreter():
                 if i != 2:
                     self.significant[i] = 1
                 else: 
-                    if x >self.sensitivity * 1.2:
+                    if x >self.sensitivity * 0.8:
                         self.significant[i] = 1
 
 
