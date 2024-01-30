@@ -68,7 +68,7 @@ if __name__ == "__main__":
     sensor=Sensors()
     
     while True:
-        '''
+        
         edge = picTaker.takePicture()
         crop = picTaker.lastCrop
         #reading = sensor.readings()
@@ -83,4 +83,5 @@ if __name__ == "__main__":
         '''
         crop = picTaker.lastCrop
         angle, shift = interpret.process(crop, draw= True)
+        '''
         
