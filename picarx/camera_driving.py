@@ -71,6 +71,7 @@ if __name__ == "__main__":
         
         edge = picTaker.takePicture()
         crop = picTaker.lastCrop
+        '''
         #reading = sensor.readings()
         plt.subplot(211)
         plt.imshow(crop,cmap='gray')
@@ -81,7 +82,6 @@ if __name__ == "__main__":
         plt.pause(3)
         plt.close()
         '''
-        crop = picTaker.lastCrop
         angle, shift = interpret.process(crop, draw= True)
-        '''
+        
         
