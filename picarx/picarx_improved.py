@@ -290,7 +290,7 @@ sensor = Sensor()
 
 class Interpreter():
     def __init__(self, sensitivity_given:float = 0.2, 
-                 polarity_given:int = 1):
+                 polarity_given:int = 0):
         self.sensitivity= sensitivity_given
         self.polarity = polarity_given
         self.dif = [0, 0, 0]
