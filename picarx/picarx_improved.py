@@ -294,6 +294,7 @@ class Interpreter():
         self.polarity = polarity_given
         self.dif = [0, 0, 0]
         self.norm = [0, 0, 0]
+        self.significant = [0, 0, 0] 
     
     def processing(self,values): 
         self.val_l = values[0]
