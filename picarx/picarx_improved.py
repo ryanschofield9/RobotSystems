@@ -411,7 +411,7 @@ def follow_line(px, sensor, interpret, controller):
     reading = sensor.sensor_reading()
     #logging.DEBUG( f"reading:{reading}")
     result = interpret.processing(reading)
-    angle = controller.control_car(result, px)
+    angle = controller.control_car(result)
     #logging.DEBUG(angle)
     px.set_dir_servo_angle(angle) 
     px.forward(30)
