@@ -415,7 +415,7 @@ def follow_line(px, sensor, interpret, controller):
     #logging.DEBUG(angle)
     px.set_dir_servo_angle(angle) 
     px.forward(30)
-    time.sleep(0.05)
+    time.sleep(0.025)
 
 '''
 def follow_line_cam():
