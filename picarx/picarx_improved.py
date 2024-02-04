@@ -315,10 +315,10 @@ class Interpreter():
         self.norm[2] = abs(self.dif[2]/self.avg)
     
         self.is_significant()
-        logging.DEBUG(self.significant)
+        #logging.DEBUG(self.significant)
         self.changes()
         self.get_results() 
-        logging.DEBUG(self.significant)
+        #logging.DEBUG(self.significant)
         
         return self.result 
     
