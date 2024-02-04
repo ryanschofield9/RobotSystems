@@ -441,7 +441,7 @@ if __name__ == "__main__":
         #time.sleep(2)
         
     start_time = time.time()
-    run_time = 10
+    run_time = 12
     px.set_dir_servo_angle(0)
     while (time.time() - start_time < run_time):
         follow_line(px, sensor, interpret, controller)
