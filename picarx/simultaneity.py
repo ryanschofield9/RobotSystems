@@ -1,7 +1,6 @@
-from picarx_improved import Picarx
-
-px = Picarx()
-
+from picarx_improved import Picarx, Sensor, Interpreter, Controller
+import time
+import concurrent.futures
 class Bus():
     def __init__(self):
         self.msg = "None"
@@ -10,25 +9,69 @@ class Bus():
     def read (self):
         return self.msg
 
-class Sensor():
+class Sensor_Bus():
     #producer
     def __init__(self):
         self.data = "NONE"
-        self.sensor_bus = Bus()
+        self.sen = Sensor()
+    
+    def producer(self,sensor_bus, delay ):
 
-    def send_data(self, data):
-       
-        return self.sensor_bus
+        while (True):
+            self.data = self.sen.sensor_reading()
+            sensor_bus.write(self.data)
+            time.sleep(delay)
 
-class interpretation():
+class Interpreter_Bus():
     def __init__(self):
-        pass
+        self.data = "NONE"
+        self.interpret = Interpreter()
+    
+    def consumer_producer(self, sensor_bus, interpreter_bus, delay):
+        while(True):
+            readings = sensor_bus.read()
+            self.data = self.interpret.processing(readings)
+            interpreter_bus.write(self.data)
+            time.sleep(delay)
+
+class Controller_Bus():
+    def __init__(self):
+        self.data = "NONE"
+        self.control = Controller()
+        self.px= Picarx
+    
+    def producer(self, interpreter_bus, delay):
+        while(True): 
+            result = interpreter_bus.read()
+            self.data = self.control.control_car(result)
+            self.px.set_dir_servo_angle(self.data)
+            self.px.forward(30)
+            time.sleep(delay) 
+
+
+
+
 
 if __name__ == "__main__":
+    px = Picarx()
+    sen = Sensor()
+    interpret = Interpreter()
+    control = Controller()
     sensor_bus = Bus()
-    sensor_bus.write("hello")
+    interpreter_bus = Bus()
     control_bus = Bus()
-    control_bus.write(6)
-    print(sensor_bus.read())
-    print(control_bus.read())
+    sensor_delay = 0.025
+    interpret_delay = 0.1
+    control_delay = 0.025
+    start_time = time.time()
+    run_time = 12
+    px.set_dir_servo_angle(0)
+
+    while (time.time() - start_time < run_time):
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            eSensor = executor.submit(sen, sensor_bus,sensor_delay)
+            eInterpreter = executor.submit(interpret,sensor_bus, interpreter_bus,interpret_delay)
+            eControl = executor.submit(control, interpreter_bus, control_delay)
+    
+    px.stop()
         
