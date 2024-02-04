@@ -436,8 +436,8 @@ if __name__ == "__main__":
     while True:
         reading = sensor.sensor_reading()
         print(reading)
-        #result = interpret.processing(reading)
-        #print(result)
+        result = interpret.processing(reading)
+        print(result)
         time.sleep(2)
         
     #start_time = time.time()
