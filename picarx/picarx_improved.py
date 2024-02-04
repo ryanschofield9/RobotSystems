@@ -409,7 +409,7 @@ class Controller():
 
 def follow_line(px, sensor, interpret, controller):
     reading = sensor.sensor_reading()
-    logging.DEBUG(reading)
+    logging.DEBUG(f"{reading}")
     result = interpret.processing(reading)
     angle = controller.control_car(result, px)
     logging.DEBUG(angle)
