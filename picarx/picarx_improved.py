@@ -19,7 +19,7 @@ logging.basicConfig(format=logging_format, level=logging.INFO,
 datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
 
-from camera_driving import Controller_Cam
+#from camera_driving import Controller_Cam
 # reset robot_hat
 #reset_mcu()
 #time.sleep(0.2)
@@ -273,8 +273,7 @@ class Picarx(object):
         else:
             raise ValueError("grayscale reference must be a 1*3 list")
 
-px = Picarx()
-controller_cam = Controller_Cam()
+#controller_cam = Controller_Cam()
 
 class Sensor():
     def __init__(self):
@@ -284,9 +283,9 @@ class Sensor():
        self.grayscale = Grayscale_Module(self.grayscale_pin_r, self.grayscale_pin_m, self.grayscale_pin_l, reference=None)
     
     def sensor_reading (self):
-        return list.copy(self.grayscale.read())
+        return (self.grayscale.read())
 
-sensor = Sensor()
+
 
 class Interpreter():
     def __init__(self, sensitivity_given:float = 0.15, 
@@ -315,10 +314,10 @@ class Interpreter():
         self.norm[2] = abs(self.dif[2]/self.avg)
     
         self.is_significant()
-        print(self.significant)
+        logging.DEBUG(self.significant)
         self.changes()
         self.get_results() 
-        print(self.significant)
+        logging.DEBUG(self.significant)
         
         return self.result 
     
@@ -326,29 +325,28 @@ class Interpreter():
         self.significant = [0, 0, 0] 
         for i, x in enumerate (self.norm):
             if x > self.sensitivity:
-                if i != 2:
-                    self.significant[i] = 1
-                else: 
-                    if x >self.sensitivity * 0.8:
-                        self.significant[i] = 1
+                self.significant[i] = 1
 
 
     def changes (self):
         
+        self.changed = False
         if self.significant == [0, 0, 0]:
             pass 
         elif self.significant == [0, 1, 0]:
             pass 
         elif self.polarity == 1: # The line is darker than the floor (lighter == higher readings)
             for i,x in enumerate(self.significant): 
-                if x == 1:
+                if x == 1 and self.changed == False:
                     if self.dif[i] > 0: 
                         self.switch()
+                        self.changed == True
         else: # The line is lighter than the floor (darker == lower )
             for i,x in enumerate(self.significant): 
-                if x == 1:
+                if x == 1 and self.changed == False:
                     if self.dif[i] < 0: 
                         self.switch()
+                        self.changed == True 
 
     def switch(self):
         for i,x in enumerate(self.significant):
@@ -378,7 +376,6 @@ class Interpreter():
                 else: 
                     self.result = 1 # right side and middle is off 
 
-interpret = Interpreter()
 
 class Controller(): 
     def __init__(self, scaling_factor_given:float = 1.0):
@@ -402,56 +399,49 @@ class Controller():
         else: 
             angle = self.scaling_factor * -11
         
-        px.set_dir_servo_angle(angle) 
 
         return angle 
 
-controller = Controller()
 
-def follow_line():
+
+def follow_line(px, sensor, interpret, controller):
     reading = sensor.sensor_reading()
-    print(reading)
+    logging.DEBUG(reading)
     result = interpret.processing(reading)
-    angle = controller.control_car(result)
-    #px.set_dir_servo_angle(angle)
-    px.forward(25)
-    time.sleep(0.025)
+    angle = controller.control_car(result, px)
+    logging.DEBUG(angle)
+    px.set_dir_servo_angle(angle) 
+    px.forward(30)
+    time.sleep(0.1)
 
+'''
 def follow_line_cam():
     angle = controller_cam.control_car()
     px.set_dir_servo_angle(angle)
     px.forward(25)
     time.sleep(0.05)
+'''
     
     
 
 if __name__ == "__main__":
 
-    #print("here")
-    #px.forward(50)
-    #sensor = Sensor()
-    #while True:
-        #reading = sensor.sensor_reading()
-        #print(reading)
-        #result = interpret.processing(reading)
-        #print(result)
-        #time.sleep(0.5)
+    px=Picarx()
+    sensor = Sensor()
+    interpret = Interpreter()
+    controller = Controller()
+    while True:
+        reading = sensor.sensor_reading()
+        print(reading)
+        result = interpret.processing(reading)
+        print(result)
+        time.sleep(0.5)
         
-    #interpret = Interpreter()
-    #print(interpret.processing(reading))
-    #time.sleep(1)
-    #px.set_dir_servo_angle(-50)
-    #px.forward(100)
-    #time.sleep(1)
-    #follow_line()
-    start_time = time.time()
-    run_time = 10
-    px.set_dir_servo_angle(0)
-    #px.forward(30)
-    #time.sleep(3)
-    while (time.time() - start_time < run_time):
-        follow_line()
-        #px.forward(50)
+    #start_time = time.time()
+    #run_time = 10
+    #px.set_dir_servo_angle(0)
+    #while (time.time() - start_time < run_time):
+        #follow_line(px, sensor, controller)
         
     
     px.stop()
