@@ -315,11 +315,11 @@ class Interpreter():
         self.norm[2] = abs(self.dif[2]/self.avg)
     
         self.is_significant()
-        print(self.significant)
+        #print(self.significant)
         #logging.DEBUG(self.significant)
         self.changes()
         self.get_results() 
-        print(self.significant)
+        #print(self.significant)
         #logging.DEBUG(self.significant)
         
         return self.result 
@@ -433,18 +433,18 @@ if __name__ == "__main__":
     sensor = Sensor()
     interpret = Interpreter()
     controller = Controller()
-    while True:
-        reading = sensor.sensor_reading()
-        print(reading)
-        result = interpret.processing(reading)
-        print(result)
-        time.sleep(2)
+    #while True:
+        #reading = sensor.sensor_reading()
+        #print(reading)
+        #result = interpret.processing(reading)
+        #print(result)
+        #time.sleep(2)
         
-    #start_time = time.time()
-    #run_time = 10
-    #px.set_dir_servo_angle(0)
-    #while (time.time() - start_time < run_time):
-        #follow_line(px, sensor, controller)
+    start_time = time.time()
+    run_time = 10
+    px.set_dir_servo_angle(0)
+    while (time.time() - start_time < run_time):
+        follow_line(px, sensor, controller)
         
     
     px.stop()
