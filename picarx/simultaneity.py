@@ -1,13 +1,17 @@
 from picarx_improved import Picarx, Sensor, Interpreter, Controller
 import time
 import concurrent.futures
+from readerwriterlock import rwlock
 class Bus():
     def __init__(self):
         self.msg = "None"
+        self.lock = rwlock.RWLockWriteD()
     def write(self,data ):
-        self.msg = data 
+        with self.lock.gen_wlock():
+            self.msg= data 
     def read (self):
-        return self.msg
+        with self.lock.gen_rlock():
+            return self.msg
 
 class Sensor_Bus():
     #producer
