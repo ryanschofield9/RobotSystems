@@ -44,7 +44,7 @@ class Controller_Bus():
         self.control = Controller()
         self.px= Picarx
     
-    def producer(self, interpreter_bus, delay):
+    def consumer(self, interpreter_bus, delay):
         while(True): 
             result = interpreter_bus.read()
             self.data = self.control.control_car(result)
@@ -58,24 +58,24 @@ class Controller_Bus():
 
 if __name__ == "__main__":
     px = Picarx()
-    sen = Sensor()
-    interpret = Interpreter()
-    control = Controller()
+    sensor = Sensor_Bus()
+    interpret = Interpreter_Bus()
+    control = Controller_Bus()
     sensor_bus = Bus()
     interpreter_bus = Bus()
     control_bus = Bus()
     sensor_delay = 0.025
-    interpret_delay = 0.1
+    interpret_delay = 0.025
     control_delay = 0.025
     start_time = time.time()
-    run_time = 12
+    run_time = 5
     px.set_dir_servo_angle(0)
 
     while (time.time() - start_time < run_time):
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-            eSensor = executor.submit(sen, sensor_bus,sensor_delay)
-            eInterpreter = executor.submit(interpret,sensor_bus, interpreter_bus,interpret_delay)
-            eControl = executor.submit(control, interpreter_bus, control_delay)
-    
+            eSensor = executor.submit(sensor.producer, sensor_bus,sensor_delay)
+            eInterpreter = executor.submit(interpret.consumer_producer,sensor_bus, interpreter_bus,interpret_delay)
+            eControl = executor.submit(control.consumer, interpreter_bus, control_delay)
+        eSensor.result()
     px.stop()
         

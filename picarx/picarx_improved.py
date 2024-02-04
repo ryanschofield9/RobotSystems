@@ -283,7 +283,7 @@ class Sensor():
        self.grayscale = Grayscale_Module(self.grayscale_pin_r, self.grayscale_pin_m, self.grayscale_pin_l, reference=None)
     
     def sensor_reading (self):
-        logging.DEBUG("in Sensor_reading")
+        print("in sensor reading")
         return (self.grayscale.read())
 
 
@@ -298,7 +298,7 @@ class Interpreter():
         self.significant = [0, 0, 0] 
     
     def processing(self,values): 
-        logging.DEBUG("in processing")
+        print("in processing")
         self.val_l = values[0]
         self.val_m = values[1]
         self.val_r = values[2]
@@ -387,7 +387,7 @@ class Controller():
          self.scaling_factor = scaling_factor_given
     
     def control_car(self, result):
-        logging.DEBUG("in control")
+        print("in control")
         #result = value in range [-1, 1] 
         # -1 means really far left from line 
         # -0.5 means a little left from line 
