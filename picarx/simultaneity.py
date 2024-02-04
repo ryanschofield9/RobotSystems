@@ -68,7 +68,7 @@ if __name__ == "__main__":
     px.set_dir_servo_angle(0)
 
     while (time.time() - start_time < run_time):
-        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
             eSensor = executor.submit(sen, sensor_bus,sensor_delay)
             eInterpreter = executor.submit(interpret,sensor_bus, interpreter_bus,interpret_delay)
             eControl = executor.submit(control, interpreter_bus, control_delay)
