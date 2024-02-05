@@ -395,13 +395,13 @@ class Controller():
         # 0.5 means a little right from line 
         # 1 means really far right from line 
         if result == -1: 
-            angle = self.scaling_factor * 35
+            angle = self.scaling_factor * 40
         elif result == -0.5: 
             angle = self.scaling_factor * 20
         elif result == 0: 
             angle = 0
         elif result == 0.5: 
-            angle = self.scaling_factor * -35
+            angle = self.scaling_factor * -40
         else: 
             angle = self.scaling_factor * -20
 
@@ -448,7 +448,7 @@ if __name__ == "__main__":
     while (time.time() - start_time < run_time):
         #follow_line(px, sensor, interpret, controller)
         px.set_dir_servo_angle(0)
-        px.forward(35)
+        px.forward(-35)
         
     
     px.stop()
