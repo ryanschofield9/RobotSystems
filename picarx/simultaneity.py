@@ -67,7 +67,7 @@ if __name__ == "__main__":
     control_bus = Bus()
     sensor_delay = 0.05
     interpret_delay = 0.05
-    control_delay = 0.0.05
+    control_delay = 0.05
     start_time = time.time()
     run_time = 5
     px.set_dir_servo_angle(0)
