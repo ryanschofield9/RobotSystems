@@ -35,11 +35,7 @@ class Interpreter_Bus():
     def consumer_producer(self, sensor_bus, interpreter_bus, delay):
         while(True):
             readings = sensor_bus.read()
-            print("readings")
-            print(readings)
             self.data = self.interpret.processing(readings)
-            print("results")
-            print(self.data)
             interpreter_bus.write(self.data)
             time.sleep(delay)
 
