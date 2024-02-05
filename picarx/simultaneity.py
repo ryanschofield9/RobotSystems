@@ -57,7 +57,7 @@ class Controller_Bus():
             result = interpreter_bus.read()
             angle = self.control.control_car(result)
             self.px.set_dir_servo_angle(angle)
-            self.px.forward(30)
+            self.px.forward(25)
             time.sleep(delay)
         px.stop()
              
