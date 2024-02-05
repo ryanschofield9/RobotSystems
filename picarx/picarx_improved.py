@@ -395,15 +395,15 @@ class Controller():
         # 0.5 means a little right from line 
         # 1 means really far right from line 
         if result == -1: 
-            angle = self.scaling_factor * 30
+            angle = self.scaling_factor * 35
         elif result == -0.5: 
-            angle = self.scaling_factor * 15
+            angle = self.scaling_factor * 20
         elif result == 0: 
             angle = 0
         elif result == 0.5: 
-            angle = self.scaling_factor * -30
+            angle = self.scaling_factor * -35
         else: 
-            angle = self.scaling_factor * -15
+            angle = self.scaling_factor * -20
 
         return angle 
 
