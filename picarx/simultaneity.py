@@ -35,7 +35,11 @@ class Interpreter_Bus():
     def consumer_producer(self, sensor_bus, interpreter_bus, delay):
         while(True):
             readings = sensor_bus.read()
+            print("readings")
+            print(readings)
             self.data = self.interpret.processing(readings)
+            print("results")
+            print(self.data)
             interpreter_bus.write(self.data)
             time.sleep(delay)
 
@@ -76,9 +80,9 @@ if __name__ == "__main__":
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
             eSensor = executor.submit(sensor.producer, sensor_bus,sensor_delay)
             eInterpreter = executor.submit(interpret.consumer_producer,sensor_bus, interpreter_bus,interpret_delay)
-            eControl = executor.submit(control.consumer, interpreter_bus, control_delay)
+            #eControl = executor.submit(control.consumer, interpreter_bus, control_delay)
         eSensor.result()
         eInterpreter.result()
-        eControl.result()
+        #eControl.result()
     px.stop()
         
