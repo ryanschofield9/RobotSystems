@@ -404,7 +404,6 @@ class Controller():
             angle = self.scaling_factor * -30
         else: 
             angle = self.scaling_factor * -15
-        
 
         return angle 
 
