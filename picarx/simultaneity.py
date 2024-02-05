@@ -53,7 +53,7 @@ class Controller_Bus():
         while(True): 
             result = interpreter_bus.read()
             angle = self.control.control_car(result)
-            self.px.set_dir_servo_angle(result)
+            self.px.set_dir_servo_angle(angle)
             self.px.forward(30)
             time.sleep(delay)
              
@@ -69,9 +69,9 @@ if __name__ == "__main__":
     sensor_bus = Bus()
     interpreter_bus = Bus()
     control_bus = Bus()
-    sensor_delay = 1
-    interpret_delay = 1
-    control_delay = 1
+    sensor_delay = 0.1
+    interpret_delay = 0.1
+    control_delay = 0.1
     start_time = time.time()
     run_time = 5
     px.set_dir_servo_angle(0)
@@ -80,9 +80,9 @@ if __name__ == "__main__":
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
             eSensor = executor.submit(sensor.producer, sensor_bus,sensor_delay)
             eInterpreter = executor.submit(interpret.consumer_producer,sensor_bus, interpreter_bus,interpret_delay)
-            #eControl = executor.submit(control.consumer, interpreter_bus, control_delay)
+            eControl = executor.submit(control.consumer, interpreter_bus, control_delay)
         eSensor.result()
         eInterpreter.result()
-        #eControl.result()
+        eControl.result()
     px.stop()
         
