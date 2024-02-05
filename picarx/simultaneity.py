@@ -42,6 +42,7 @@ class Interpreter_Bus():
             self.data = self.interpret.processing(readings)
             interpreter_bus.write(self.data)
             time.sleep(delay)
+        
 
 class Controller_Bus():
     def __init__(self):
@@ -58,6 +59,7 @@ class Controller_Bus():
             self.px.set_dir_servo_angle(angle)
             self.px.forward(30)
             time.sleep(delay)
+        px.stop()
              
 
     
