@@ -22,7 +22,9 @@ class Sensor_Bus():
     
     def producer(self,sensor_bus, delay ):
 
-        while (True):
+        start_time = time.time()
+        run_time = 10
+        while (time.time() - start_time < run_time):
             self.data = self.sen.sensor_reading()
             sensor_bus.write(self.data)
             time.sleep(delay)
@@ -33,7 +35,9 @@ class Interpreter_Bus():
         self.interpret = Interpreter()
     
     def consumer_producer(self, sensor_bus, interpreter_bus, delay):
-        while(True):
+        start_time = time.time()
+        run_time = 10
+        while (time.time() - start_time < run_time):
             readings = sensor_bus.read()
             self.data = self.interpret.processing(readings)
             interpreter_bus.write(self.data)
@@ -46,7 +50,9 @@ class Controller_Bus():
         self.px= Picarx()
     
     def consumer(self, interpreter_bus, delay):
-        while(True): 
+        start_time = time.time()
+        run_time = 10
+        while (time.time() - start_time < run_time):
             result = interpreter_bus.read()
             angle = self.control.control_car(result)
             self.px.set_dir_servo_angle(angle)
