@@ -443,10 +443,12 @@ if __name__ == "__main__":
         #time.sleep(2)
         
     start_time = time.time()
-    run_time = 12
+    run_time = 2
     px.set_dir_servo_angle(0)
     while (time.time() - start_time < run_time):
-        follow_line(px, sensor, interpret, controller)
+        #follow_line(px, sensor, interpret, controller)
+        px.set_dir_servo_angle(0)
+        px.forward(35)
         
     
     px.stop()
