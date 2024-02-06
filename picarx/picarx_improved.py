@@ -435,20 +435,20 @@ if __name__ == "__main__":
     sensor = Sensor()
     interpret = Interpreter()
     controller = Controller()
-    #while True:
-        #reading = sensor.sensor_reading()
-        #print(reading)
-        #result = interpret.processing(reading)
-        #print(result)
-        #time.sleep(2)
+    while True:
+        reading = sensor.sensor_reading()
+        print(reading)
+        result = interpret.processing(reading)
+        print(result)
+        time.sleep(2)
         
     start_time = time.time()
     run_time = 2
     px.set_dir_servo_angle(0)
-    while (time.time() - start_time < run_time):
+    #while (time.time() - start_time < run_time):
         #follow_line(px, sensor, interpret, controller)
-        px.set_dir_servo_angle(0)
-        px.forward(-35)
+        #px.set_dir_servo_angle(0)
+        #px.forward(-35)
         
     
     px.stop()
