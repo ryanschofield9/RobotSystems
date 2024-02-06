@@ -290,7 +290,7 @@ class Sensor():
 
 class Interpreter():
     def __init__(self, sensitivity_given:float = 0.3, 
-                 polarity_given:int = 0):
+                 polarity_given:int = 1):
         self.sensitivity= sensitivity_given
         self.polarity = polarity_given
         self.dif = [0, 0, 0]
@@ -317,11 +317,11 @@ class Interpreter():
         self.norm[2] = abs(self.dif[2]/self.avg)
     
         self.is_significant()
-        #print(self.significant)
+        print(self.significant)
         #logging.DEBUG(self.significant)
         self.changes()
         self.get_results() 
-        #print(self.significant)
+        print(self.significant)
         #logging.DEBUG(self.significant)
         
         return self.result 
