@@ -385,6 +385,7 @@ class Interpreter():
 class Controller(): 
     def __init__(self, scaling_factor_given:float = 1.0):
          self.scaling_factor = scaling_factor_given
+         self.px = Picarx()
          
     def control_car(self, result):
         print("in controller")
@@ -405,6 +406,9 @@ class Controller():
         else: 
             angle = self.scaling_factor * -20
 
+        self.px.set_dir_servo_angle(angle)
+        self.px.forward(25)
+        
         return angle 
 
 
