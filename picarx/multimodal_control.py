@@ -7,9 +7,13 @@ logging.getLogger().setLevel(logging.INFO)
 
 #initiate buses 
 
-grayscale_sensor = rr.Bus(Sensor.sensor_reading(), "grayscale_bus")
-interpreter_gray = rr.Bus(Interpreter.processing(Sensor.sensor_reading()), "interpreter gray bus") 
-control_grey = rr.Bus(Controller.control_car(Interpreter.processing(Sensor.sensor_reading())), "controller_gray_bus")
+grySensor = Sensor()
+gryInt = Interpreter()
+gryControl = Controller()
+
+grayscale_sensor = rr.Bus(grySensor.sensor_reading(), "grayscale_bus")
+interpreter_gray = rr.Bus(gryInt.processing(Sensor.sensor_reading()), "interpreter gray bus") 
+control_grey = rr.Bus(gryControl.control_car(Interpreter.processing(Sensor.sensor_reading())), "controller_gray_bus")
 terminate = rr.Bus(0, "Terminate Bus")
 
 produceSignal = rr.Producer(Sensor.sensor_reading(), grayscale_sensor, 0.05, terminate, "Produce grapyscale sensor signal")
