@@ -12,13 +12,13 @@ gryInt = Interpreter()
 gryControl = Controller()
 
 grayscale_sensor = rr.Bus(grySensor.sensor_reading(), "grayscale_bus")
-interpreter_gray = rr.Bus(gryInt.processing(Sensor.sensor_reading()), "interpreter gray bus") 
-control_grey = rr.Bus(gryControl.control_car(Interpreter.processing(Sensor.sensor_reading())), "controller_gray_bus")
+interpreter_gray = rr.Bus(gryInt.processing(grySensor.sensor_reading()), "interpreter gray bus") 
+control_grey = rr.Bus(gryControl.control_car(gryInt.processing(grySensor.sensor_reading())), "controller_gray_bus")
 terminate = rr.Bus(0, "Terminate Bus")
 
-produceSignal = rr.Producer(Sensor.sensor_reading(), grayscale_sensor, 0.05, terminate, "Produce grapyscale sensor signal")
-prodConIntGray = rr.ConsumerProducer(Interpreter.processing(), grayscale_sensor, interpreter_gray, 0.1, terminate, "Producer Consumer Interpreter gray scale")
-consumerControl = rr.Consumer(Controller.control_car(), interpreter_gray, 0.1, terminate, "Consumer grayscale controler" )
+produceSignal = rr.Producer(grySensor.sensor_reading(), grayscale_sensor, 0.05, terminate, "Produce grapyscale sensor signal")
+prodConIntGray = rr.ConsumerProducer(gryInt.processing(), grayscale_sensor, interpreter_gray, 0.1, terminate, "Producer Consumer Interpreter gray scale")
+consumerControl = rr.Consumer(gryControl.control_car(), interpreter_gray, 0.1, terminate, "Consumer grayscale controler" )
 
 printBuses = rr.Printer(
     (grayscale_sensor, interpreter_gray, control_grey, terminate),
