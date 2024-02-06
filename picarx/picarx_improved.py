@@ -282,7 +282,7 @@ class Sensor():
        self.grayscale_pin_l = ADC('A2')
        self.grayscale = Grayscale_Module(self.grayscale_pin_r, self.grayscale_pin_m, self.grayscale_pin_l, reference=None)
     
-    def sensor_reading (self):
+    def sensor_reading(self):
         print("in sensor")
         return (self.grayscale.read())
 
