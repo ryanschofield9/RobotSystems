@@ -9,7 +9,7 @@ logging.getLogger().setLevel(logging.INFO)
 
 grySensor = Sensor()
 gryInt = Interpreter()
-#gryControl = Controller()
+gryControl = Controller()
 
 ultSensor = SensorUltra()
 ultInt = InterpreterUltra()
@@ -19,7 +19,7 @@ controlCom = ControllerCombined()
 
 grayscale_sensor = rr.Bus(grySensor.sensor_reading(), "grayscale_bus")
 interpreter_gray = rr.Bus(gryInt.processing(grySensor.sensor_reading()), "interpreter gray bus") 
-#control_grey = rr.Bus(gryControl.control_car(gryInt.processing(grySensor.sensor_reading())), "controller_gray_bus")
+control_grey = rr.Bus(gryControl.control_car(gryInt.processing(grySensor.sensor_reading())), "controller_gray_bus")
 ultra_sensor = rr.Bus(ultSensor.sensor_reading(), "ultra_bus")
 interpreter_ultra = rr.Bus(ultInt.processing(ultSensor.sensor_reading()), "interpreter ultra bus")
 control_ultra = rr.Bus(ultControl.control_car(ultInt.processing(ultSensor.sensor_reading())), "controller_ult_bus")
@@ -28,7 +28,7 @@ terminate = rr.Bus(0, "Terminate Bus")
 
 produceSignal = rr.Producer(grySensor.sensor_reading, grayscale_sensor, 0.05, terminate, "Produce grapyscale sensor signal")
 prodConIntGray = rr.ConsumerProducer(gryInt.processing, grayscale_sensor, interpreter_gray, 0.1, terminate, "Producer Consumer Interpreter gray scale")
-#consumerControl = rr.Consumer(gryControl.control_car, interpreter_gray, 0.1, terminate, "Consumer grayscale controler" )
+consumerControl = rr.Consumer(gryControl.control_car, interpreter_gray, 0.1, terminate, "Consumer grayscale controler" )
 produceSignalUlt = rr.Producer(ultSensor.sensor_reading, ultra_sensor, 0.05, terminate, "Produce ultra sensor signal" )
 prodConIntUlt = rr.ConsumerProducer(ultInt.processing, ultra_sensor, interpreter_ultra, 0.1,terminate, "Produce Consumer Interpreter ultra" )
 #contCombined = rr.Consumer (controlCom.control_car,[interpreter_gray, interpreter_ultra], 0.1, terminate, "Consumer Combined Control" )
@@ -54,7 +54,7 @@ producer_consumer_list = [produceSignal,
                           prodConIntGray, 
                           produceSignalUlt, 
                           prodConIntUlt, 
-                          consuControlUlt,
+                          consumerControl,
                           terminationTimer]
 
 # Execute the list of producer-consumers concurrently
