@@ -473,6 +473,7 @@ class ControllerCombined ():
 
         self.px.set_dir_servo_angle(angle)
         self.px.forward(result_ult*self.speed)
+        print("end")
 
         return angle
 
