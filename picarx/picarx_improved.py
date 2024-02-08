@@ -461,15 +461,15 @@ class ControllerCombined ():
         print (result_ult)
         print(result_ult*self.speed)
         if result_gry == -1: 
-            angle = self.scaling_factor * 40
+            angle =  40
         elif result_gry == -0.5: 
-            angle = self.scaling_factor * 20
+            angle =  20
         elif result_gry == 0: 
             angle = 0
         elif result_gry == 0.5: 
-            angle = self.scaling_factor * -40
+            angle =  -40
         else: 
-            angle = self.scaling_factor * -20
+            angle =  -20
 
         self.px.set_dir_servo_angle(angle)
         self.px.forward(result_ult*self.speed)
