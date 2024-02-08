@@ -429,9 +429,9 @@ class InterpreterUltra():
     def processing(self, distance):
         print("in processing ultra")
         self.distance = distance 
-        if self.distance < 1: 
+        if self.distance < 5: 
             self.result = 0
-        elif self.distance < 2: 
+        elif self.distance < 10: 
             self.result = 0.5 
         else: 
             self.result = 1 
@@ -503,13 +503,17 @@ if __name__ == "__main__":
     sensor = Sensor()
     interpret = Interpreter()
     controller = Controller()
-    while True:
-        reading = sensor.sensor_reading()
-        print(reading)
-        result = interpret.processing(reading)
-        print(result)
-        time.sleep(2)
-        
+    sensorUlt = SensorUltra()
+    #while True:
+        #reading = sensor.sensor_reading()
+        #print(reading)
+        #result = interpret.processing(reading)
+        #print(result)
+        #time.sleep(2)
+    
+    while True: 
+        reading = sensorUlt.sensor(reading )
+        time.sleep(1) 
     start_time = time.time()
     run_time = 2
     px.set_dir_servo_angle(0)
