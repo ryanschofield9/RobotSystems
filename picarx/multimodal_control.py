@@ -31,7 +31,7 @@ prodConIntGray = rr.ConsumerProducer(gryInt.processing, grayscale_sensor, interp
 consumerControl = rr.Consumer(gryControl.control_car, interpreter_gray, 0.1, terminate, "Consumer grayscale controler" )
 produceSignalUlt = rr.Producer(ultSensor.sensor_reading, ultra_sensor, 0.05, terminate, "Produce ultra sensor signal" )
 prodConIntUlt = rr.ConsumerProducer(ultInt.processing, ultra_sensor, interpreter_ultra, 0.1,terminate, "Produce Consumer Interpreter ultra" )
-contCombined = rr.Consumer (controlCom.control_car,[interpreter_gray, interpreter_ultra], 0.1, terminate, "Consumer Combined Control" )
+contCombined = rr.Consumer(controlCom.control_car,[interpreter_gray, interpreter_ultra], 0.1, terminate, "Consumer Combined Control" )
 consuControlUlt = rr.Consumer(ultControl.control_car,interpreter_ultra, 0.1, terminate, "consumer ultra bus" )
 
 # (grayscale_sensor, interpreter_gray, ultra_sensor, interpreter_ultra, control, terminate)
