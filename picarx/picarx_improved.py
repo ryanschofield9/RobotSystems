@@ -512,7 +512,7 @@ if __name__ == "__main__":
         #time.sleep(2)
     
     while True: 
-        reading = sensorUlt.sensor(reading )
+        reading = sensorUlt.sensor_reading()
         time.sleep(1) 
     start_time = time.time()
     run_time = 2
