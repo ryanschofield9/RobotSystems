@@ -32,7 +32,7 @@ prodConIntUlt = rr.ConsumerProducer(ultInt.processing, ultra_sensor, interpreter
 contCombined = rr.Consumer (controlCom.control_car,[interpreter_gray, interpreter_ultra], 0.1, terminate, "Consumer Combined Control" )
 # (grayscale_sensor, interpreter_gray, ultra_sensor, interpreter_ultra, control, terminate)
 printBuses = rr.Printer(
-    (grayscale_sensor),
+    (grayscale_sensor, interpreter_gray, ultra_sensor, interpreter_ultra, control, terminate), 
     1,  # delay between printing cycles
     terminate,  # bus to watch for termination signal
     "Print bus data",  # Name of printer
