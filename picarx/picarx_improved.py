@@ -456,6 +456,7 @@ class ControllerCombined ():
         self.speed = 50 
     
     def control_car(self, result_gry, result_ult):
+        print("in controller combined")
         if result_gry == -1: 
             angle = self.scaling_factor * 40
         elif result_gry == -0.5: 
@@ -469,6 +470,8 @@ class ControllerCombined ():
 
         self.px.set_dir_servo_angle(angle)
         self.px.forward(result_ult*self.speed)
+
+        return angle
 
 
         
