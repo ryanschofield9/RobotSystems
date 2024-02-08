@@ -287,7 +287,6 @@ class Sensor():
         return (self.grayscale.read())
 
 
-
 class Interpreter():
     def __init__(self, sensitivity_given:float = 0.25, 
                  polarity_given:int = 1):
@@ -412,6 +411,69 @@ class Controller():
         return angle 
 
 
+class SensorUltra():
+    def __init__(self):
+        tring, echo= ['D2','D3']
+        self.ultrasonic = Ultrasonic(Pin(tring), Pin(echo))
+
+    def sensor_reading(self):
+        print("in ultra_sonic_sensor")
+        return self.ultrasonic.read()
+
+
+class InterpreterUltra():
+    def __init__(self):
+        self.distance = 0
+        self.result = 0 
+    def processing(self, distance):
+        print("in processing ultra")
+        self.distance = distance 
+        if self.distance < 1: 
+            self.result = 0
+        elif self.distance < 2: 
+            self.result = 0.5 
+        else: 
+            self.result = 1 
+        
+        return self.result 
+
+class ControllerUltra():
+    def __init__(self, scaling_factor_given:float = 1.0):
+        self.scaling_factor = scaling_factor_given
+        self.px = Picarx()
+        self.result = 0 
+        self.speed = 40 
+    
+    def control_car(self, result):
+        print("in ultrasonic control")
+        self.result = result 
+        px.forward(self.speed*result)
+
+class ControllerCombined (): 
+    def __init__(self):
+        self.px = Picarx()
+        self.result = 0 
+        self.speed = 50 
+    
+    def control_car(self, result_gry, result_ult):
+        if result_gry == -1: 
+            angle = self.scaling_factor * 40
+        elif result_gry == -0.5: 
+            angle = self.scaling_factor * 20
+        elif result_gry == 0: 
+            angle = 0
+        elif result_gry == 0.5: 
+            angle = self.scaling_factor * -40
+        else: 
+            angle = self.scaling_factor * -20
+
+        self.px.set_dir_servo_angle(angle)
+        self.px.forward(result_ult*self.speed)
+
+
+        
+
+
 
 def follow_line(px, sensor, interpret, controller):
     reading = sensor.sensor_reading()
@@ -429,9 +491,7 @@ def follow_line_cam():
     px.set_dir_servo_angle(angle)
     px.forward(25)
     time.sleep(0.05)
-'''
-    
-    
+''' 
 
 if __name__ == "__main__":
 

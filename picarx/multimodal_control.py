@@ -1,4 +1,4 @@
-from picarx_improved import Picarx, Sensor, Interpreter, Controller
+from picarx_improved import Picarx, Sensor, Interpreter, Controller, SensorUltra, InterpreterUltra, ControllerCombined
 import rossros as rr 
 import logging
 import time
@@ -9,19 +9,30 @@ logging.getLogger().setLevel(logging.INFO)
 
 grySensor = Sensor()
 gryInt = Interpreter()
-gryControl = Controller()
+#gryControl = Controller()
+
+ultSensor = SensorUltra()
+ultInt = InterpreterUltra()
+
+controlCom = ControllerCombined()
 
 grayscale_sensor = rr.Bus(grySensor.sensor_reading(), "grayscale_bus")
 interpreter_gray = rr.Bus(gryInt.processing(grySensor.sensor_reading()), "interpreter gray bus") 
-control_grey = rr.Bus(gryControl.control_car(gryInt.processing(grySensor.sensor_reading())), "controller_gray_bus")
+#control_grey = rr.Bus(gryControl.control_car(gryInt.processing(grySensor.sensor_reading())), "controller_gray_bus")
+ultra_sensor = rr.Bus(ultSensor.sensor_reading(), "ultra_bus")
+interpreter_ultra = rr.Bus(ultInt.processing(ultSensor.sensor_reading()), "interpreter ultra bus")
+control = rr.Bus(controlCom.control_car(gryInt.processing(grySensor.sensor_reading()), ultInt.processing(ultSensor.sensor_reading())))
 terminate = rr.Bus(0, "Terminate Bus")
 
 produceSignal = rr.Producer(grySensor.sensor_reading, grayscale_sensor, 0.05, terminate, "Produce grapyscale sensor signal")
 prodConIntGray = rr.ConsumerProducer(gryInt.processing, grayscale_sensor, interpreter_gray, 0.1, terminate, "Producer Consumer Interpreter gray scale")
-consumerControl = rr.Consumer(gryControl.control_car, interpreter_gray, 0.1, terminate, "Consumer grayscale controler" )
+#consumerControl = rr.Consumer(gryControl.control_car, interpreter_gray, 0.1, terminate, "Consumer grayscale controler" )
+produceSignalUlt = rr.Producer(ultSensor.sensor_reading, ultra_sensor, 0.05, terminate, "Produce ultra sensor signal" )
+prodConIntUlt = rr.ConsumerProducer(ultInt.processing, ultra_sensor, interpreter_ultra, 0.1,terminate, "Produce Consumer Interpreter ultra" )
+contCombined = rr.Consumer (controlCom.control_car,[interpreter_gray, interpreter_ultra], 0.1, terminate, "Consumer Combined Control" )
 
 printBuses = rr.Printer(
-    (grayscale_sensor, interpreter_gray, control_grey, terminate),
+    (grayscale_sensor, interpreter_gray, ultra_sensor, interpreter_ultra, control, terminate),
     1,  # delay between printing cycles
     terminate,  # bus to watch for termination signal
     "Print bus data",  # Name of printer
@@ -36,7 +47,9 @@ terminationTimer = rr.Timer(
 
 producer_consumer_list = [produceSignal, 
                           prodConIntGray, 
-                          consumerControl,
+                          produceSignalUlt, 
+                          prodConIntUlt, 
+                          contCombined,
                           printBuses,
                           terminationTimer]
 
