@@ -458,6 +458,8 @@ class ControllerCombined ():
     
     def control_car(self, result_gry, result_ult):
         print("in controller combined")
+        print (result_ult)
+        print(result_ult*self.speed)
         if result_gry == -1: 
             angle = self.scaling_factor * 40
         elif result_gry == -0.5: 
