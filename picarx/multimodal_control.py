@@ -50,7 +50,6 @@ producer_consumer_list = [produceSignal,
                           produceSignalUlt, 
                           prodConIntUlt, 
                           contCombined,
-                          printBuses,
                           terminationTimer]
 
 # Execute the list of producer-consumers concurrently
