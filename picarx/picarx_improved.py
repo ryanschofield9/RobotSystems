@@ -429,9 +429,9 @@ class InterpreterUltra():
     def processing(self, distance):
         print("in processing ultra")
         self.distance = distance 
-        if self.distance < 5: 
+        if self.distance < 8: 
             self.result = 0
-        elif self.distance < 10: 
+        elif self.distance < 15: 
             self.result = 0.5 
         else: 
             self.result = 1 
