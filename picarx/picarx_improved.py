@@ -283,7 +283,7 @@ class Sensor():
        self.grayscale = Grayscale_Module(self.grayscale_pin_r, self.grayscale_pin_m, self.grayscale_pin_l, reference=None)
     
     def sensor_reading(self):
-        print("in sensor")
+        #print("in sensor")
         return (self.grayscale.read())
 
 
@@ -297,7 +297,7 @@ class Interpreter():
         self.significant = [0, 0, 0] 
     
     def processing(self,values): 
-        print("in interpreter")
+        #print("in interpreter")
         self.val_l = values[0]
         self.val_m = values[1]
         self.val_r = values[2]
@@ -387,7 +387,7 @@ class Controller():
          self.px = Picarx()
          
     def control_car(self, result):
-        print("in controller")
+        #print("in controller")
         #result = value in range [-1, 1] 
         # -1 means really far left from line 
         # -0.5 means a little left from line 
@@ -417,8 +417,8 @@ class SensorUltra():
         self.ultrasonic = Ultrasonic(Pin(tring), Pin(echo))
 
     def sensor_reading(self):
-        print("in ultra_sonic_sensor")
-        print(self.ultrasonic.read())
+        #print("in ultra_sonic_sensor")
+        #print(self.ultrasonic.read())
         return self.ultrasonic.read()
 
 
@@ -427,7 +427,7 @@ class InterpreterUltra():
         self.distance = 0
         self.result = 0 
     def processing(self, distance):
-        print("in processing ultra")
+        #print("in processing ultra")
         self.distance = distance 
         if self.distance < 8: 
             self.result = 0
