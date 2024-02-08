@@ -454,7 +454,7 @@ class ControllerCombined ():
     def __init__(self):
         self.px = Picarx()
         self.result = 0 
-        self.speed = 50 
+        self.speed = 30 
     
     def control_car(self, result_gry, result_ult):
         print("in controller combined")
