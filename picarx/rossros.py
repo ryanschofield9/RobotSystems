@@ -312,10 +312,10 @@ class Printer(Consumer):
             else:
                 if isinstance(msg,list):
                     print('This is a list')                                          # If it's not a string, assume it's a number and convert it
-                #msg_str = str("{0:.4g}".format(msg))       # Convert to string with 4 significant figures
-                msg_str = ''
-                #if msg >= 0:                               # Append a space before the value if it is not negative
-                #    msg_str = " " + msg_str
+                    #msg_str = str("{0:.4g}".format(msg))       # Convert to string with 4 significant figures
+                    #msg_str = ''
+                    #if msg >= 0:                               # Append a space before the value if it is not negative
+                       #msg_str = " " + msg_str
 
             output_string = output_string + " " + msg_str  # Append the message string to the output string
 
