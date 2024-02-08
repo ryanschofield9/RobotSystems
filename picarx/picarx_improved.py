@@ -448,7 +448,7 @@ class ControllerUltra():
     def control_car(self, result):
         print("in ultrasonic control")
         self.result = result 
-        px.forward(self.speed*result)
+        self.px.forward(self.speed*result)
 
 class ControllerCombined (): 
     def __init__(self):
