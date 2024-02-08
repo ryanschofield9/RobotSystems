@@ -123,6 +123,7 @@ class ConsumerProducer:
 
         # Loop over the buses, recording their values
         for p in buses:
+            print(p)
             values.append(p.get_message(self.name))
 
         return values
