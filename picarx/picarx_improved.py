@@ -418,6 +418,7 @@ class SensorUltra():
 
     def sensor_reading(self):
         print("in ultra_sonic_sensor")
+        print(self.ultrasonic.read())
         return self.ultrasonic.read()
 
 
